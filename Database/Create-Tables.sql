@@ -19,9 +19,9 @@ CREATE TABLE PRODUCTS (
 	Image				Varchar(500)		NULL,
 	Description 		Text				NULL,
 	Price				Decimal (10,2)		NOT NULL,
-	Exclusive			TINYINT(1)			NOT NULL,
+	Exclusive			TINYINT				NOT NULL,
 
-	CONSTRAINT 			UserPK				PRIMARY KEY(User_ID),
+	CONSTRAINT 			ProductPK			PRIMARY KEY(Product_ID),
 	CONSTRAINT 			ExclusiveValues		CHECK (Exclusive IN (0, 1))
 );
 
@@ -29,7 +29,7 @@ ALTER TABLE PRODUCTS AUTO_INCREMENT = 100;
 
 CREATE TABLE REWARDS (
 	Reward_ID			Int					NOT NULL AUTO_INCREMENT,
-	Type				TINYINT(1)			NOT NULL,
+	Type				TINYINT				NOT NULL,
 	Points				Int					NOT NULL,
 	Start				DateTime			NOT NULL,
 	End					DateTime			NULL,
@@ -47,7 +47,7 @@ CREATE TABLE PERCENTDISCOUNTREWARD (
 	Reward_ID			Int				NOT NULL,
 	Percent				Decimal (10,2)	NOT NULL,
 
-	CONSTRAINT 			RewardFK		FOREIGN KEY(Reward_ID)
+	CONSTRAINT 			RewardPercentFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
@@ -58,7 +58,7 @@ CREATE TABLE PRICEDISCOUNTREWARD (
 	Reward_ID			Int				NOT NULL,
 	Price				Decimal (10,2)	NOT NULL,
 
-	CONSTRAINT 			RewardFK		FOREIGN KEY(Reward_ID)
+	CONSTRAINT 			RewardPriceFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION
@@ -69,7 +69,7 @@ CREATE TABLE PRODUCTUPGRADEREWARD (
 	PrevProduct_ID		Int				NOT NULL,
 	NextProduct_ID		Int				NOT NULL,
 
-	CONSTRAINT 			RewardFK		FOREIGN KEY(Reward_ID)
+	CONSTRAINT 			RewardUpgradeFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
@@ -81,14 +81,14 @@ CREATE TABLE PRODUCTUPGRADEREWARD (
 										REFERENCES PRODUCTS(Product_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
-	CONSTRAINT			DifferentProduct CHECK (PrevProductFK <> NextProductFK)
+	CONSTRAINT			DifferentProduct CHECK (PrevProduct_ID <> NextProduct_ID)
 );
 
 CREATE TABLE EXCLUSIVEPRODUCTREWARD (
 	Reward_ID			Int				NOT NULL,
 	Product_ID			Int				NOT NULL,
 	
-	CONSTRAINT 			RewardFK		FOREIGN KEY(Reward_ID)
+	CONSTRAINT 			RewardExclusiveFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
@@ -105,11 +105,11 @@ CREATE TABLE REWARDTRANSACTION (
 	Date				DateTime		NOT NULL,
 
 	CONSTRAINT 			TransactionPK	PRIMARY KEY(Transaction_ID),
-	CONSTRAINT 			UserFK			FOREIGN KEY(User_ID)
+	CONSTRAINT 			UserRewardFK	FOREIGN KEY(User_ID)
 										REFERENCES USERS(User_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
-	CONSTRAINT 			RewardFK		FOREIGN KEY(Reward_ID)
+	CONSTRAINT 			RewardUserFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION
