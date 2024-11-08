@@ -1,4 +1,3 @@
-CREATE DATABASE lprs;
 USE lprs;
 
 CREATE TABLE USERS (
