@@ -45,6 +45,20 @@ Install the following packages:\
 Run the backend server:\
 `python manage.py runserver`
 
+Create an app in the project:\
+`python manage.py startapp <app-name>` where `app-name` is replaced for what you want to name your app.\
+For this case, I named the app `lprs`.\
+
+Find the config, go to `<app-name>/apps.py`. You will see a class named `<app-name>Config`.\
+Add the app config to `INSTALLED_APPS` inside of `settings.py`.\
+For this case, the added app config is `lprs.apps.LprsConfig`.\
+
+Follow the repo files to edit your `urlpatterns` in project `urls.py`:\
+Do the same for `urls.py` in your apps folder.\
+Remember to change the `<app-name>` for both `urls.py`.\
+
+Move on to database setup when you are done with backend setup.\
+
 ## Database Setup (mySQL)
 
 Note: Make sure you are using a virtual environment.
@@ -53,11 +67,36 @@ Install the following packages within the `Backend` directory:\
 `pip install mysqlclient`
 
 mySQL Connection:\
-Modify the `settings.py` file for `DATABASES = {...}` to have your local database credentials.
+`pip install python-dotenv` to have environmental varaibles for credentials.\
+Add a `.env` file and store your credentials. (Do not share .env file)\
+Format of variables are `DB_<VAR> = <value>`.\
+Store this file at `Backend/rewards_backend/.env`.\
+This will modify the `settings.py` file for `DATABASES = {...}` to have your local database credentials.
 
-Run the backend server:\
-`python manage.py runserver`
 
-Migration Command:\
-`python manage.py makemigrations`\
-`python manage.py migrate`
+### Available Scripts
+
+#### `python manage.py inspectdb > models.py`
+Auto-generate the models in order to preprare for migration.\
+Open the file in application `Notepad` and save the file with encoding `UTF-8`.\
+Replace `models.py` within your apps folder with the newly generated models.py file.\
+
+#### `python manage.py makemigrations`
+Create new migrations based on the changes make to your models.\
+Follow the instuctions in `models.py` to fix any errors with the generated model.\
+There will be some extra generated models not related to the database. Please delete those models.\
+Don't worry about the `primary_key=True` issue since Django will add an IntegerField for the primary key.\
+Refer to the database files for the structure of the database.\
+
+#### `python manage.py migrate`
+Apply/Unapply migrations.
+
+#### `python manage.py showmigrations`
+Show migrations and their status.
+
+## Online Setup Guides:
+
+### Backend
+https://medium.com/@sp.techwriter/create-cms-react-django-api-and-mysql-database-for-beginners-a15e628035c2
+
+https://medium.com/@sinturana07/create-crud-operation-using-django-inbuilt-form-and-mysql-using-the-database-in-project-chapter-6-968a907dcb9a

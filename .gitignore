@@ -1,2 +1,9 @@
 # VSCode
 .vscode
+
+# Hide database credentials
+Backend/rewards_backend/.env
+
+# Remove any virtual environment data
+Backend/rewards_backend/Scripts/
+Backend/rewards_backend/pyvenv.cfg
