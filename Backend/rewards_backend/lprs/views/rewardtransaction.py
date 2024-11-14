@@ -7,13 +7,57 @@ from ..serializers import *
 # Note: Update lprs/serializers.py and lprs/urls.py
 
 # Get all reward transactions
-
+@api_view(['GET'])
+def get_all_rewardtransactions(request):
+    fetch_data = Rewardtransaction.objects.all()
+    serializer = RewardTransactionSerializer(fetch_data, many=True)
+    return Response(serializer.data)
 # Get all reward by users
-
+@api_view(['GET'])
+def get_all_reward_by_user(request, userid):
+    fetch_data = Rewardtransaction.objects.get(userid=userid)
+    serializer = RewardTransactionSerializer(fetch_data, many=True)
+    return Response(serializer.data)
 # Get all reward by reward
-
+@api_view(['GET'])
+def get_all_reward_by_reward(request, type):
+    fetch_data = Rewardtransaction.objects.get(type = type)
+    serializer = RewardTransactionSerializer(fetch_data, many=True)
+    return Response(serializer.data)
 # Create a new reward transaction
+@api_view(['POST'])
+def create_rewardtransaction(request):
+    serializer = RewardTransactionSerializer(data=request.data)
 
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # Get / Update / Delete a specific reward transaction
-    # Get reward ID from the reward transaction if transaction is "active"
-    # May need to update the mySQL and models.py files for the "active" attribute
+@api_view(['GET', 'PUT', 'DELETE'])
+def specific_reward(request, pk):
+     # Fetch the data of the reward using the primary key
+    try:
+        rewardtransaction = Rewardtransaction.objects.get(pk=pk)
+    except Rewardtransaction.DoesNotExist:
+        return Response(status=status.HTTP_404_BAD_REQUEST)
+    
+    # Get the specified user
+    if request.method == 'GET':
+        serializer = RewardTransactionSerializer(rewardtransaction)
+        return Response(serializer.data)
+    
+    #Update details of the specified reward
+    elif request.method == 'PUT':
+        serializer = RewardTransactionSerializer(rewardtransaction, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    # Delete the user
+    elif request.method == 'DELETE':
+        rewardtransaction.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    

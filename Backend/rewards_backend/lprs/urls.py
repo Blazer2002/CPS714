@@ -1,4 +1,5 @@
 from django.urls import path
+
 from .views.users import *
 from .views.products import *
 from .views.rewards import *
@@ -12,4 +13,12 @@ urlpatterns = [
     path('products/get-all/', get_all_products, name='get_all_products'),
     path('products/post/', create_product, name='create_product'),
     path('products/<int:pk>', specific_product, name='specific_product'),
+
+    path('rewards/get-all', get_all_rewards, name = 'get_all_rewards'),
+    path('percentdisccountrewards/get-all', get_all_percent_discount_rewards, name = 'get_all_percent_discount_rewards'),
+    path('pricedisccountrewards/get-all', get_all_price_discount_rewards, name = 'get_all_price_discount_rewards'),
+    path('productupgraderewards/get-all', get_all_product_upgrade_rewards, name = 'get_all_product_upgrade_rewards'),
+    path('exclusiveupgraderewards/get-all', get_all_exclusive_product_rewards, name = 'get_all_exclusive_product_rewards'),
+
+
 ]

@@ -89,15 +89,18 @@ class Rewards(models.Model):
         db_table = 'rewards'
 
 class Percentdiscountreward(models.Model):
-    reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
+    reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
     percent = models.DecimalField(db_column='Percent', max_digits=10, decimal_places=2)
 
     class Meta:
         managed = False
         db_table = 'percentdiscountreward'
+        models.UniqueConstraint(
+            fields=['reward'], name='unique_percent_discount'
+        )
 
 class Pricediscountreward(models.Model):
-    reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
+    reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
     price = models.DecimalField(db_column='Price', max_digits=10, decimal_places=2)
 
     class Meta:
@@ -105,7 +108,7 @@ class Pricediscountreward(models.Model):
         db_table = 'pricediscountreward'
 
 class Productupgradereward(models.Model):
-    reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
+    reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
     prevproduct = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='PrevProduct_ID')
     nextproduct = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='NextProduct_ID', related_name='productupgradereward_nextproduct_set')
 
@@ -114,7 +117,7 @@ class Productupgradereward(models.Model):
         db_table = 'productupgradereward'
 
 class Exclusiveproductreward(models.Model):
-    reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
+    reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
     product = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
 
     class Meta:
