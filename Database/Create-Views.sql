@@ -78,6 +78,8 @@ CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
             
 CREATE VIEW REWARDTRANSACTIONVIEW AS
 	SELECT 
+		RT.Transaction_ID AS Transaction_ID,
+        RT.Date AS Date,
 	
 		R.Reward_ID AS Reward_ID,
         R.End AS End,
@@ -85,7 +87,7 @@ CREATE VIEW REWARDTRANSACTIONVIEW AS
         R.Image AS RewardImage,
 
         U.User_ID AS User_ID
-
+        
 	FROM REWARDS AS R JOIN REWARDTRANSACTION AS RT
 		ON 	R.Reward_ID = RT.Reward_ID
         JOIN USERS AS U

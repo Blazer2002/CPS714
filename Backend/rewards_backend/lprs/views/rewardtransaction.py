@@ -9,26 +9,30 @@ from ..serializers import *
 # Get all reward transactions
 @api_view(['GET'])
 def get_all_rewardtransactions(request):
-    fetch_data = Rewardtransaction.objects.all()
+    fetch_data = Rewardtransactionview.objects.all()
     serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 # Get all reward by users
 @api_view(['GET'])
 def get_all_reward_by_user(request, userid):
-    fetch_data = Rewardtransaction.objects.filter(user_id=userid)
+    fetch_data = Rewardtransactionview.objects.filter(user_id=userid)
     serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 # Get all reward by reward
 @api_view(['GET'])
-def get_all_reward_by_reward(request, type):
-    fetch_data = Rewardtransaction.objects.get(type = type)
-    serializer = RewardTransactionSerializer(fetch_data, many=True)
+def get_all_reward_by_reward(request, rewardid):
+    fetch_data = Rewardtransactionview.objects.filter(reward_id=rewardid)
+    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
-    serializer = RewardTransactionSerializer(data=request.data)
+    serializer = RewardTransactionViewSerializer(data=request.data)
 
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    serializer = RewardsSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
