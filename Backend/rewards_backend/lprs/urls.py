@@ -1,9 +1,9 @@
 from django.urls import path
 
-from .views.users import *
-from .views.products import *
-from .views.rewards import *
-from .views.rewardtransaction import *
+from .views.users import get_all_users, create_user, specific_user
+from .views.products import get_all_products, create_product, specific_product
+from .views.rewards import get_all_rewards, get_all_percent_discount_rewards, get_all_price_discount_rewards, get_all_product_upgrade_rewards, get_all_exclusive_product_rewards, create_reward, specific_reward
+from .views.rewardtransaction import get_all_rewardtransactions, get_all_reward_by_user, get_all_reward_by_reward, create_rewardtransaction, specific_rewardtransaction
 
 urlpatterns = [
     path('users/get-all/', get_all_users, name='get_all_users'),
@@ -19,6 +19,12 @@ urlpatterns = [
     path('pricedisccountrewards/get-all', get_all_price_discount_rewards, name = 'get_all_price_discount_rewards'),
     path('productupgraderewards/get-all', get_all_product_upgrade_rewards, name = 'get_all_product_upgrade_rewards'),
     path('exclusiveupgraderewards/get-all', get_all_exclusive_product_rewards, name = 'get_all_exclusive_product_rewards'),
+    path('rewards/post/', create_reward, name='create_user'),
+    path('rewards/<int:pk>', specific_reward, name='specific_reward'),
 
-
+    path('rewardtransactions/get-all', get_all_rewardtransactions, name = 'get_all_rewardtransactions'),
+    path('rewardbyuser/get-all', get_all_reward_by_user, name = 'get_all_reward_by_user'),
+    path('rewardbyreward/get-all', get_all_reward_by_reward, name = 'get_all_reward_by_reward'),
+    path('rewardtransaction/post/', create_rewardtransaction, name='create_rewardtransaction'),
+    path('rewardtransaction/<int:pk>', specific_rewardtransaction, name='specific_rewardtransaction'),
 ]

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import *
+from .models import Users, Products, Rewardtransaction, Rewards, Percentdiscountreward, Pricediscountreward, Productupgradereward, Exclusiveproductreward
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:

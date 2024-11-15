@@ -35,7 +35,7 @@ def create_rewardtransaction(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 # Get / Update / Delete a specific reward transaction
 @api_view(['GET', 'PUT', 'DELETE'])
-def specific_reward(request, pk):
+def specific_rewardtransaction(request, pk):
      # Fetch the data of the reward using the primary key
     try:
         rewardtransaction = Rewardtransaction.objects.get(pk=pk)
