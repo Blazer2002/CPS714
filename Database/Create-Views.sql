@@ -93,6 +93,7 @@ CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
 CREATE VIEW REWARDTRANSACTIONVIEW AS
 	SELECT 
 		RT.Transaction_ID AS Transaction_ID,
+        RT.Active AS Active,
         RT.Date AS Date,
 	
 		R.Reward_ID AS Reward_ID,

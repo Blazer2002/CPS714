@@ -27,12 +27,8 @@ def get_all_reward_by_reward(request, rewardid):
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
-    serializer = RewardTransactionViewSerializer(data=request.data)
+    serializer = RewardTransactionSerializer(data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    serializer = RewardsSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -48,16 +44,21 @@ def specific_rewardtransaction(request, pk):
     
     # Get the specified user
     if request.method == 'GET':
-        serializer = RewardTransactionSerializer(rewardtransaction)
+        serializer = RewardTransactionViewSerializer(rewardtransaction)
         return Response(serializer.data)
     
-    #Update details of the specified reward
+    #Update details of the specified reward transaction
     elif request.method == 'PUT':
         serializer = RewardTransactionSerializer(rewardtransaction, data=request.data)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        
+        serializer = RewardsSerializer(rewardtransaction, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     # Delete the user
