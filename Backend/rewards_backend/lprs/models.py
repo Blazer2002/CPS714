@@ -136,7 +136,6 @@ class Rewardtransaction(models.Model):
         managed = False
         db_table = 'rewardtransaction'
 
-<<<<<<< HEAD
 class Rewardtransactionview(models.Model):
     transaction_id = models.AutoField(db_column='Transaction_ID', primary_key=True)
     user = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='User_ID')
@@ -150,8 +149,6 @@ class Rewardtransactionview(models.Model):
         managed = False
         db_table = 'rewardtransactionview'
 
-=======
->>>>>>> main
 class Analytics(models.Model):
     analytics_id = models.AutoField(primary_key=True)
     survey = models.ForeignKey('Surveys', on_delete=models.CASCADE)
