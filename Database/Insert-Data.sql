@@ -6,21 +6,33 @@ VALUES
 ('Patrick', 'patrick@torontomu.ca', 'pass2', 'Patrick', 'Urban', 'Admin', 0);
 
 INSERT INTO PRODUCTS (
-	ProductName, category, sustainability_level, Price, Exclusive
+	ProductName, category, sustainability_level, Price
 ) VALUES (
-	"UpgradeATestProduct", 'Monitoring', 'Moderate', 100.00, 0
+	"PercentTestProduct", 'Monitoring', 'Moderate', 100.00
 );
 
 INSERT INTO PRODUCTS (
-	ProductName, category, sustainability_level, Price, Exclusive
+	ProductName, category, sustainability_level, Price
 ) VALUES (
-	"UpgradeBTestProduct", 'Category B', 'Low', 200.00, 0
+	"PriceTestProduct", 'Category B', 'Low', 200.00
 );
 
 INSERT INTO PRODUCTS (
-	ProductName, category, sustainability_level, Price, Exclusive
+	ProductName, category, sustainability_level, Price
 ) VALUES (
-	"ExclusiveTestProduct", 'Category C', 'High', 300.00, 1
+	"UpgradeATestProduct", 'Monitoring', 'Moderate', 100.00
+);
+
+INSERT INTO PRODUCTS (
+	ProductName, category, sustainability_level, Price
+) VALUES (
+	"UpgradeBTestProduct", 'Category B', 'Low', 200.00
+);
+
+INSERT INTO PRODUCTS (
+	ProductName, category, sustainability_level, Price
+) VALUES (
+	"ExclusiveTestProduct", 'Category C', 'High', 300.00
 );
 
 INSERT INTO Client_Engagement (user_id, participation_type, participation_date)
@@ -51,51 +63,51 @@ INSERT INTO surveys (`name`, `description`, `created_date`, `expiry_date`)
 VALUES ('Service Satisfaction', 'Customer thoughts on the eco-initiative program', '2024-09-01', '2024-12-31');
 
 INSERT INTO REWARDS (
-	survey_id, Type, Points, Start, Title
+	survey_id, Points, Start, Title
 ) VALUES (
-	1, 0, 200, NOW(), "PercentDiscountTest"
+	1, 200, NOW(), "PercentDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Type, Points, Start, Title
+	survey_id, Points, Start, Title
 ) VALUES (
-	1, 1, 300, NOW(), "PriceDiscountTest"
+	1, 300, NOW(), "PriceDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Type, Points, Start, Title
+	survey_id, Points, Start, Title
 ) VALUES (
-	1, 2, 400, NOW(), "UpgradeTest"
+	1, 400, NOW(), "UpgradeTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Type, Points, Start, Title
+	survey_id, Points, Start, Title
 ) VALUES (
-	1, 3, 500, NOW(), "ExclusiveTest"
+	1, 500, NOW(), "ExclusiveTest"
 );
 
 INSERT INTO PERCENTDISCOUNTREWARD (
-	Reward_ID, Percent
+	Reward_ID, Product_ID, Percent
 ) VALUES (
-	200, 50.00
+	200, 100, 50.00
 );
 
 INSERT INTO PRICEDISCOUNTREWARD (
-	Reward_ID, Price
+	Reward_ID, Product_ID, Price
 ) VALUES (
-	201, 25.00
+	201, 101, 25.00
 );
 
 INSERT INTO PRODUCTUPGRADEREWARD (
 	Reward_ID, PrevProduct_ID, NextProduct_ID
 ) VALUES (
-	202, 100, 101
+	202, 102, 103
 );
 
 INSERT INTO EXCLUSIVEPRODUCTREWARD (
 	Reward_ID, Product_ID
 ) VALUES (
-	203, 102
+	203, 104
 );
 
 INSERT INTO REWARDTRANSACTION (

@@ -9,10 +9,17 @@ CREATE VIEW PERCENTDISCOUNTREWARDVIEW AS
         R.Title AS Title,
         R.Image AS Image,
         R.Description AS Description,
-        PER.Percent AS Percent
+        PER.Percent AS Percent,
+        
+        P.ProductName AS ProductName,
+        P.Image AS ProductImage,
+        P.Description AS ProductDescription,
+        P.Price AS Price
 
 	FROM REWARDS AS R JOIN PERCENTDISCOUNTREWARD AS PER
-		ON 	R.Reward_ID = PER.Reward_ID;
+		ON 	R.Reward_ID = PER.Reward_ID
+        JOIN PRODUCTS AS P
+            ON 	P.Product_ID = PER.Product_ID;
 
 CREATE VIEW PRICEDISCOUNTREWARDVIEW AS
 	SELECT
@@ -23,10 +30,17 @@ CREATE VIEW PRICEDISCOUNTREWARDVIEW AS
         R.Title AS Title,
         R.Image AS Image,
         R.Description AS Description,
-        PRI.Price AS Price
+        PRI.Price AS DiscountPrice,
+        
+        P.ProductName AS ProductName,
+        P.Image AS ProductImage,
+        P.Description AS ProductDescription,
+        P.Price AS Price
 
 	FROM REWARDS AS R JOIN PRICEDISCOUNTREWARD AS PRI
-		ON 	R.Reward_ID = PRI.Reward_ID;
+		ON 	R.Reward_ID = PRI.Reward_ID
+        JOIN PRODUCTS AS P
+            ON 	P.Product_ID = PRI.Product_ID;
 
 CREATE VIEW PRODUCTUPGRADEREWARDVIEW AS
 	SELECT 	
@@ -76,3 +90,18 @@ CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
 		ON 	R.Reward_ID = E.Reward_ID
         JOIN PRODUCTS AS P
             ON 	P.Product_ID = E.Product_ID;
+
+CREATE VIEW REWARDTRANSACTIONVIEW AS
+	SELECT 
+		T.Transaction_ID AS Transaction_ID,
+        U.User_ID AS User_ID,
+        R.Reward_ID AS Reward_ID,
+        R.End AS End,
+        R.Title AS RewardTitle,
+        R.Image AS RewardImage,
+        T.Date AS Date
+
+	FROM REWARDTRANSACTION AS T JOIN REWARDS AS R
+		ON 	T.Reward_ID = R.Reward_ID
+        JOIN USERS AS U
+            ON 	T.User_ID = U.User_ID;

@@ -23,10 +23,8 @@ CREATE TABLE PRODUCTS (
 	category 			VARCHAR(50),
     sustainability_level VARCHAR(50),
 	Price				Decimal (10,2)		NOT NULL,
-	Exclusive			TINYINT				NOT NULL,
 
-	CONSTRAINT 			ProductPK			PRIMARY KEY(Product_ID),
-	CONSTRAINT 			ExclusiveValues		CHECK (Exclusive IN (0, 1))
+	CONSTRAINT 			ProductPK			PRIMARY KEY(Product_ID)
 );
 
 ALTER TABLE PRODUCTS AUTO_INCREMENT = 100;
@@ -70,7 +68,6 @@ CREATE TABLE SurveyResponses (
 CREATE TABLE REWARDS (
 	Reward_ID			Int					NOT NULL AUTO_INCREMENT,
     survey_id			Int					NOT NULL,
-	Type				TINYINT				NOT NULL,
 	Points				Int					NOT NULL,
 	Start				DateTime			NOT NULL,
 	End					DateTime			NULL,
@@ -79,8 +76,7 @@ CREATE TABLE REWARDS (
 	Description 		Text				NULL,
     FOREIGN KEY (survey_id) REFERENCES Surveys(survey_id),
     
-	CONSTRAINT 			RewardPK			PRIMARY KEY(Reward_ID),
-	CONSTRAINT 			TypeValues			CHECK (Type IN (0, 1, 2, 3))
+	CONSTRAINT 			RewardPK			PRIMARY KEY(Reward_ID)
 );
 
 ALTER TABLE REWARDS AUTO_INCREMENT = 200;
@@ -88,10 +84,15 @@ ALTER TABLE REWARDS AUTO_INCREMENT = 200;
 -- Create Percent Discount Reward transactions table
 CREATE TABLE PERCENTDISCOUNTREWARD (
 	Reward_ID			Int				NOT NULL,
+	Product_ID			Int				NOT NULL,
 	Percent				Decimal (10,2)	NOT NULL,
 
 	CONSTRAINT 			RewardPercentFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
+ 											ON UPDATE NO ACTION
+											ON DELETE NO ACTION,
+	CONSTRAINT 			ProductPercentFK FOREIGN KEY(Product_ID)
+										REFERENCES PRODUCTS(Product_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION,
 	CONSTRAINT			Percent			CHECK ((Percent >= 0) AND (Percent <= 100))
@@ -100,10 +101,15 @@ CREATE TABLE PERCENTDISCOUNTREWARD (
 -- Create price discount reward transactions table
 CREATE TABLE PRICEDISCOUNTREWARD (
 	Reward_ID			Int				NOT NULL,
+	Product_ID			Int				NOT NULL,
 	Price				Decimal (10,2)	NOT NULL,
 
 	CONSTRAINT 			RewardPriceFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
+ 											ON UPDATE NO ACTION
+											ON DELETE NO ACTION,
+	CONSTRAINT 			ProductPriceFK FOREIGN KEY(Product_ID)
+										REFERENCES PRODUCTS(Product_ID)
  											ON UPDATE NO ACTION
 											ON DELETE NO ACTION
 );
