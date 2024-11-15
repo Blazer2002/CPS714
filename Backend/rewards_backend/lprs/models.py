@@ -134,6 +134,19 @@ class Rewardtransaction(models.Model):
         managed = False
         db_table = 'rewardtransaction'
 
+class Rewardtransactionview(models.Model):
+    transaction_id = models.AutoField(db_column='Transaction_ID', primary_key=True)
+    user = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='User_ID')
+    reward_id = models.ForeignKey('Rewards', db_column='Reward_ID', on_delete=models.CASCADE)
+    end = models.DateTimeField(db_column='End', blank=True, null=True)
+    title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)
+    image = models.CharField(db_column='Image', max_length=500, blank=True, null=True)
+    date = models.DateTimeField(db_column='Date')
+
+    class Meta:
+        managed = False
+        db_table = 'rewardtransactionview'
+
 class Analytics(models.Model):
     analytics_id = models.AutoField(primary_key=True)
     survey = models.ForeignKey('Surveys', on_delete=models.CASCADE)

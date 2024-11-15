@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Users, Products, Rewardtransaction, Rewards, Percentdiscountreward, Pricediscountreward, Productupgradereward, Exclusiveproductreward
+from .models import *
 
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,4 +39,9 @@ class ProductUpgradeRewardSerializer(serializers.ModelSerializer):
 class ExclusiveProductRewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exclusiveproductreward
+        fields = '__all__'
+
+class RewardTransactionViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rewardtransactionview
         fields = '__all__'

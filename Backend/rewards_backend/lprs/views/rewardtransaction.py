@@ -10,7 +10,7 @@ from ..serializers import *
 @api_view(['GET'])
 def get_all_rewardtransactions(request):
     fetch_data = Rewardtransaction.objects.all()
-    serializer = RewardTransactionSerializer(fetch_data, many=True)
+    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 # Get all reward by users
 @api_view(['GET'])

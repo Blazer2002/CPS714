@@ -75,3 +75,18 @@ CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
 		ON 	R.Reward_ID = E.Reward_ID
         JOIN PRODUCTS AS P
             ON 	P.Product_ID = E.Product_ID;
+            
+CREATE VIEW REWARDTRANSACTIONVIEW AS
+	SELECT 
+	
+		R.Reward_ID AS Reward_ID,
+        R.End AS End,
+        R.Title AS RewardTitle,
+        R.Image AS RewardImage,
+
+        U.User_ID AS User_ID
+
+	FROM REWARDS AS R JOIN REWARDTRANSACTION AS RT
+		ON 	R.Reward_ID = RT.Reward_ID
+        JOIN USERS AS U
+            ON 	U.User_ID = RT.User_ID;
