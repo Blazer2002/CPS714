@@ -19,7 +19,7 @@ urlpatterns = [
     path('pricedisccountrewards/get-all', get_all_price_discount_rewards, name = 'get_all_price_discount_rewards'),
     path('productupgraderewards/get-all', get_all_product_upgrade_rewards, name = 'get_all_product_upgrade_rewards'),
     path('exclusiveupgraderewards/get-all', get_all_exclusive_product_rewards, name = 'get_all_exclusive_product_rewards'),
-    path('rewards/post/', create_reward, name='create_user'),
+    path('rewards/post/<int:type>', create_reward, name='create_user'),
     path('rewards/<int:pk>', specific_reward, name='specific_reward'),
 
     path('rewardtransactions/get-all', get_all_rewardtransactions, name = 'get_all_rewardtransactions'),
