@@ -111,27 +111,27 @@ INSERT INTO EXCLUSIVEPRODUCTREWARD (
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 200, NOW()
+	1, 200, NOW(), 0
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 201, NOW()
+	1, 201, NOW(), 1
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 202, NOW()
+	1, 202, NOW(), 0
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 203, NOW()
+	1, 203, NOW(), 1
 );
 
 INSERT INTO feedback (`user_id`, `date_submitted`, `product_id`, `service_rating`, `comments`, `sustainability_score`) 

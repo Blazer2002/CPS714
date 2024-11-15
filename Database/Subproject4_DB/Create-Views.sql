@@ -99,7 +99,8 @@ CREATE VIEW REWARDTRANSACTIONVIEW AS
         R.End AS End,
         R.Title AS RewardTitle,
         R.Image AS RewardImage,
-        T.Date AS Date
+        T.Date AS Date,
+        T.Active AS Active
 
 	FROM REWARDTRANSACTION AS T JOIN REWARDS AS R
 		ON 	T.Reward_ID = R.Reward_ID

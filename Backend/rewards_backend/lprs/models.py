@@ -129,6 +129,7 @@ class Rewardtransaction(models.Model):
     user = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='User_ID')
     reward = models.ForeignKey(Rewards, on_delete=models.CASCADE, db_column='Reward_ID')
     date = models.DateTimeField(db_column='Date')
+    active = models.IntegerField(db_column='Active')
 
     class Meta:
         managed = False
@@ -295,6 +296,7 @@ class Rewardtransactionview(models.Model):
     title = models.CharField(db_column='RewardTitle', max_length=255, blank=True, null=True)
     image = models.CharField(db_column='RewardImage', max_length=500, blank=True, null=True)
     date = models.DateTimeField(db_column='Date')
+    active = models.IntegerField(db_column='Active')
 
     class Meta:
         managed = False
