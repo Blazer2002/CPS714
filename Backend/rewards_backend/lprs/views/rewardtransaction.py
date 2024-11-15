@@ -15,8 +15,8 @@ def get_all_rewardtransactions(request):
 # Get all reward by users
 @api_view(['GET'])
 def get_all_reward_by_user(request, userid):
-    fetch_data = Rewardtransaction.objects.get(userid=userid)
-    serializer = RewardTransactionSerializer(fetch_data, many=True)
+    fetch_data = Rewardtransaction.objects.filter(user_id=userid)
+    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 # Get all reward by reward
 @api_view(['GET'])
