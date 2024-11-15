@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..models import *
 from ..serializers import *
+import json
 
 # Get all reward
 @api_view(['GET'])
@@ -52,7 +53,7 @@ def create_reward(request, type):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
     elif type == 1:
         serializer = PriceDiscountRewardSerializer(data=request.data)
@@ -103,7 +104,19 @@ def specific_reward(request, pk):
     
     # Get the specified user
     if request.method == 'GET':
-        serializer = RewardsSerializer(reward)
+        if(Pricediscountrewardview.objects.filter(pk=pk).exists()):
+            price_discount = Pricediscountrewardview.objects.get(pk=pk)
+            serializer = PriceDiscountRewardViewSerializer(price_discount)
+        elif(Percentdiscountrewardview.objects.filter(pk=pk).exists()):
+            percent_discount = Percentdiscountrewardview.objects.get(pk=pk)
+            serializer = PercentDiscountRewardViewSerializer(percent_discount)
+        elif(Productupgraderewardview.objects.filter(pk=pk).exists()):
+            product_upgrade = Productupgraderewardview.objects.get(pk=pk)
+            serializer = ProductUpgradeRewardViewSerializer(product_upgrade)
+        elif(Exclusiveproductrewardview.objects.filter(pk=pk).exists()):
+            exclusive = Exclusiveproductrewardview.objects.get(pk=pk)
+            serializer = ExclusiveProductRewardViewSerializer(exclusive)
+
         return Response(serializer.data)
     
     #Update details of the specified reward
