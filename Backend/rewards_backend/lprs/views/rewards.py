@@ -14,29 +14,29 @@ def get_all_rewards(request):
 # Get all percent discount reward
 @api_view(['GET'])
 def get_all_percent_discount_rewards(request):
-    fetch_data = Percentdiscountreward.objects.all()
-    serializer = PercentDiscountRewardSerializer(fetch_data, many=True)
+    fetch_data = Percentdiscountrewardview.objects.all()
+    serializer = PercentDiscountRewardViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 
 # Get all price discount reward
 @api_view(['GET'])
 def get_all_price_discount_rewards(request):
-    fetch_data = Pricediscountreward.objects.all()
-    serializer = PriceDiscountRewardSerializer(fetch_data, many=True)
+    fetch_data = Pricediscountrewardview.objects.all()
+    serializer = PriceDiscountRewardViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 
 # Get all product upgrade reward
 @api_view(['GET'])
 def get_all_product_upgrade_rewards(request):
-    fetch_data = Productupgradereward.objects.all()
-    serializer = ProductUpgradeRewardSerializer(fetch_data, many=True)
+    fetch_data = Productupgraderewardview.objects.all()
+    serializer = ProductUpgradeRewardViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 
 # Get all exclusive product reward
 @api_view(['GET'])
 def get_all_exclusive_product_rewards(request):
-    fetch_data = Exclusiveproductreward.objects.all()
-    serializer = ExclusiveProductRewardSerializer(fetch_data, many=True)
+    fetch_data = Exclusiveproductrewardview.objects.all()
+    serializer = ExclusiveProductRewardViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
 
 # Create a new reward

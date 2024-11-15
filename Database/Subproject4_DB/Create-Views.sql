@@ -30,6 +30,7 @@ CREATE VIEW PRICEDISCOUNTREWARDVIEW AS
 
 CREATE VIEW PRODUCTUPGRADEREWARDVIEW AS
 	SELECT 	
+        R.Reward_ID AS Reward_ID,
         R.Points AS Points,
         R.Start AS Start,
         R.End AS End,
