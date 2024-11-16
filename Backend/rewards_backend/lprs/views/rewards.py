@@ -1,7 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-import datetime
 from ..models import *
 from ..serializers import *
 
@@ -92,8 +91,33 @@ def create_reward(request, type):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    elif type == 2:
+        rewardserializer = RewardsSerializer(data=request.data)
+        if not rewardserializer.is_valid():
+            return Response(rewardserializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+        reward = Rewards(
+            points=rewardserializer.validated_data.get('points'),
+            end=rewardserializer.validated_data.get('end'),
+            title=rewardserializer.validated_data.get('title'),
+            image=rewardserializer.validated_data.get('image'),
+            description=rewardserializer.validated_data.get('description')
+        )
+        reward.save()
 
-    # elif type == 2:
+        rewardpk=Rewards.objects.latest('reward_id').reward_id
+        upgrade = Productupgradereward(
+            pk=rewardpk,
+            prevproduct_id=request.data['prevproduct_id'],
+            nextproduct_id=request.data['nextproduct_id']
+        )
+        upgrade.save()
+
+        upgradeview = Productupgraderewardview.objects.get(pk=rewardpk)
+        serializer = ProductUpgradeRewardViewSerializer(upgradeview)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
     elif type == 3:
         rewardserializer = RewardsSerializer(data=request.data)
