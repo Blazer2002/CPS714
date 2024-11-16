@@ -106,10 +106,12 @@ def create_reward(request, type):
         reward.save()
 
         rewardpk=Rewards.objects.latest('reward_id').reward_id
+        prevfk=request.data['prevproduct_id']
+        nextfk=request.data['nextproduct_id']
         upgrade = Productupgradereward(
             pk=rewardpk,
-            prevproduct_id=request.data['prevproduct_id'],
-            nextproduct_id=request.data['nextproduct_id']
+            prevproduct_id=Products.objects.get(pk=prevfk).product_id,
+            nextproduct_id=Products.objects.get(pk=nextfk).product_id
         )
         upgrade.save()
 
