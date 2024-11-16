@@ -67,14 +67,12 @@ CREATE TABLE SurveyResponses (
 -- Create Rewards table
 CREATE TABLE REWARDS (
 	Reward_ID			Int					NOT NULL AUTO_INCREMENT,
-    survey_id			Int					NOT NULL,
 	Points				Int					NOT NULL,
 	Start				DateTime			NOT NULL,
 	End					DateTime			NULL,
 	Title				VARCHAR(255),
 	Image				Varchar(500)		NULL,
 	Description 		Text				NULL,
-    FOREIGN KEY (survey_id) REFERENCES Surveys(survey_id),
     
 	CONSTRAINT 			RewardPK			PRIMARY KEY(Reward_ID)
 );

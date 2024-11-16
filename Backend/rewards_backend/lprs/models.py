@@ -94,9 +94,6 @@ class Percentdiscountreward(models.Model):
     class Meta:
         managed = False
         db_table = 'percentdiscountreward'
-        models.UniqueConstraint(
-            fields=['reward'], name='unique_percent_discount'
-        )
 
 class Pricediscountreward(models.Model):
     reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)

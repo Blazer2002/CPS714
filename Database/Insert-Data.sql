@@ -63,27 +63,27 @@ INSERT INTO surveys (`name`, `description`, `created_date`, `expiry_date`)
 VALUES ('Service Satisfaction', 'Customer thoughts on the eco-initiative program', '2024-09-01', '2024-12-31');
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 200, NOW(), "PercentDiscountTest"
+	200, NOW(), "PercentDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 300, NOW(), "PriceDiscountTest"
+	300, NOW(), "PriceDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 400, NOW(), "UpgradeTest"
+	400, NOW(), "UpgradeTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 500, NOW(), "ExclusiveTest"
+	500, NOW(), "ExclusiveTest"
 );
 
 INSERT INTO PERCENTDISCOUNTREWARD (
