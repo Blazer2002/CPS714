@@ -76,7 +76,6 @@ class Surveyresponses(models.Model):
 
 class Rewards(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
-    survey = models.ForeignKey('Surveys', on_delete=models.CASCADE)
     points = models.IntegerField(db_column='Points')
     start = models.DateTimeField(db_column='Start')
     end = models.DateTimeField(db_column='End', blank=True, null=True)

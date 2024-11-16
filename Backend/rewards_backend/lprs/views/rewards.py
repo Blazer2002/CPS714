@@ -122,9 +122,42 @@ def specific_reward(request, pk):
     #Update details of the specified reward
     elif request.method == 'PUT':
         serializer = RewardsSerializer(reward, data=request.data)
-
         if serializer.is_valid():
             serializer.save()
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        if(Pricediscountreward.objects.filter(pk=pk).exists()):
+            price_discount = Pricediscountreward.objects.get(pk=pk)
+            serializer = PriceDiscountRewardSerializer(price_discount, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            price_discount = Pricediscountrewardview.objects.get(pk=pk)
+            serializer = PriceDiscountRewardViewSerializer(price_discount)
+            return Response(serializer.data)
+        elif(Percentdiscountreward.objects.filter(pk=pk).exists()):
+            percent_discount = Percentdiscountreward.objects.get(pk=pk)
+            serializer = PercentDiscountRewardSerializer(percent_discount, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            percent_discount = Percentdiscountrewardview.objects.get(pk=pk)
+            serializer = PercentDiscountRewardViewSerializer(percent_discount)
+            return Response(serializer.data)
+        elif(Productupgradereward.objects.filter(pk=pk).exists()):
+            product_upgrade = Productupgradereward.objects.get(pk=pk)
+            serializer = ProductUpgradeRewardSerializer(product_upgrade, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            product_upgrade = Productupgraderewardview.objects.get(pk=pk)
+            serializer = ProductUpgradeRewardViewSerializer(product_upgrade)
+            return Response(serializer.data)
+        elif(Exclusiveproductreward.objects.filter(pk=pk).exists()):
+            exclusive = Exclusiveproductreward.objects.get(pk=pk)
+            serializer = ExclusiveProductRewardSerializer(exclusive, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            exclusive = Exclusiveproductrewardview.objects.get(pk=pk)
+            serializer = ExclusiveProductRewardViewSerializer(exclusive)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
