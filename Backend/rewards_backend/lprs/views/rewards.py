@@ -92,9 +92,9 @@ def create_reward(request, type):
         print("not a valid type input")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
 
-# Get / Update / Delete a specific reward
+# Get / Update a specific reward
 # Make sure to update the discount/upgrade/exclusive table
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET', 'PUT'])
 def specific_reward(request, pk):
      # Fetch the data of the reward using the primary key
     try:
@@ -162,6 +162,6 @@ def specific_reward(request, pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     # Delete the user
-    elif request.method == 'DELETE':
-        reward.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    #elif request.method == 'DELETE':
+        #reward.delete()
+        #return Response(status=status.HTTP_204_NO_CONTENT)
