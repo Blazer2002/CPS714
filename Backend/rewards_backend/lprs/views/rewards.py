@@ -4,7 +4,6 @@ from rest_framework import status
 import datetime
 from ..models import *
 from ..serializers import *
-import json
 
 # Get all reward
 @api_view(['GET'])
@@ -93,6 +92,9 @@ def create_reward(request, type):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
+    # elif type == 2:
+
     elif type == 3:
         rewardserializer = RewardsSerializer(data=request.data)
         if not rewardserializer.is_valid():

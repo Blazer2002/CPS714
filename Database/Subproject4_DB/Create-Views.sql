@@ -11,6 +11,7 @@ CREATE VIEW PERCENTDISCOUNTREWARDVIEW AS
         R.Description AS Description,
         PER.Percent AS Percent,
         
+        P.Product_ID AS Product_ID,
         P.ProductName AS ProductName,
         P.Image AS ProductImage,
         P.Description AS ProductDescription,
@@ -32,6 +33,7 @@ CREATE VIEW PRICEDISCOUNTREWARDVIEW AS
         R.Description AS Description,
         PRI.Price AS DiscountPrice,
         
+        P.Product_ID AS Product_ID,
         P.ProductName AS ProductName,
         P.Image AS ProductImage,
         P.Description AS ProductDescription,
@@ -52,11 +54,13 @@ CREATE VIEW PRODUCTUPGRADEREWARDVIEW AS
         R.Image AS RewardImage,
         R.Description AS RewardDescription,
 
+        A.Product_ID AS PrevProduct_ID,
         A.ProductName AS PrevProductName,
         A.Image AS PrevProductImage,
         A.Description AS PrevProductDescription,
         A.Price AS PrevPrice,
 
+        B.Product_ID AS NextProduct_ID,
         B.ProductName AS NextProductName,
         B.Image AS NextProductImage,
         B.Description AS NextProductDescription,
@@ -72,15 +76,15 @@ CREATE VIEW PRODUCTUPGRADEREWARDVIEW AS
 
 CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
 	SELECT 
-	
 		R.Reward_ID AS Reward_ID,
         R.Points AS Points,
         R.Start AS Start,
         R.End AS End,
-        R.Title AS RewardTitle,
-        R.Image AS RewardImage,
-        R.Description AS RewardDescription,
+        R.Title AS Title,
+        R.Image AS Image,
+        R.Description AS Description,
 
+        P.Product_ID AS Product_ID,
         P.ProductName AS ProductName,
         P.Image AS ProductImage,
         P.Description AS ProductDescription,
