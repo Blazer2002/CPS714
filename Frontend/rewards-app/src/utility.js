@@ -13,4 +13,4 @@ function formatDate(dateString) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-export default formatDate;
+export default formatDate

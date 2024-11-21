@@ -6,15 +6,21 @@ import ConfirmationPopup from './ConfirmationPopup';
 import SuccessPopup from './SuccessPopup';
 import FailurePopup from './FailurePopup';
 import TransactionPopup from './TransactionPopup';
+import { createTransaction } from '../createTransaction';
 
 function RewardDetails() {
+    const user_id = 1; /* get user id*/
+
     const { reward_id } = useParams();
     const [reward, setReward] = useState(null);
+    const [user, setUser] = useState(null);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [showTransactionPopup, setShowTransactionPopup] = useState(false);
     const [redeemStatus, setRedeemStatus] = useState(null);
+    const [newTransaction, setNewTransaction] = useState(null);
 
     const navigate = useNavigate();
     
@@ -30,7 +36,8 @@ function RewardDetails() {
         setIsPopupOpen(false);
     };
 
-    const handleSuccess = () => {
+    const handleSuccess = (transaction) => {
+        setNewTransaction(transaction);
         setShowTransactionPopup(true);
     }
 
@@ -40,11 +47,18 @@ function RewardDetails() {
     };
 
     const handleRedeemConfirmation = () => {
-        if (200 < reward.points) {
-            {/* user.points, fetch current user */}
+        if (user_id < reward.points) {
             setRedeemStatus(false);
         } else {
-            setRedeemStatus(true);
+            createTransaction(user_id, reward)
+            .then(transaction => {
+                setRedeemStatus(true);
+                handleSuccess(transaction);
+            })
+            .catch(error => {
+                setRedeemStatus(false);
+                console.error("Error creating transaction:", error);
+            });
         }
         setIsPopupOpen(false);
     };
@@ -57,15 +71,30 @@ function RewardDetails() {
                 }
                 return response.json();
             })
-            .then(data => {
-                setReward(data);
+            .then(rewardData => {
+                setReward(rewardData);
                 setLoading(false);
             })
             .catch(error => {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [reward_id]);
+
+        fetch(`http://localhost:8000/lprs/users/${user_id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch user data');
+                }
+                return response.json();
+            })
+            .then(userData => {
+                setUser(userData);
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, [reward_id, user_id]);
 
     if (loading) {
         return <p>Loading reward details...</p>;
@@ -124,9 +153,9 @@ function RewardDetails() {
                 
             )}
 
-            {showTransactionPopup && (
+            {showTransactionPopup && newTransaction && (
                 <TransactionPopup
-                    reward={reward}
+                    transaction={newTransaction}
                     isOpen={showTransactionPopup}
                     onClose={closeTransactionPopup}/>
             )}
