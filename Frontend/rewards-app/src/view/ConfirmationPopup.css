@@ -1,0 +1,119 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+  
+.popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 550px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content .terms-conditions {
+    width: 95%;
+    padding: 10px;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: left;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.popup-content .points-info {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 95%;
+    height: 100px;
+    border: 1px solid black;
+    margin: 0 auto;
+    border-radius: 10px;
+    flex-direction: column;
+    gap: 10px
+}
+
+.popup-content .info-container {
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-left h4 {
+    color: rgba(0, 0, 0, 0.75);
+    padding: 4px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-right h4 {
+    font-weight: normal;
+    padding: 4px;
+}
+
+.popup-content .transaction-info h4 {
+    text-align: left;
+    padding-left: 20px;
+}
+  
+.button-container {
+    display: flex;
+    justify-content: space-around;
+}
+  
+.close-button,
+.confirm-button {
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(136, 255, 123, 0.624);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+    color: black;
+    font-size: 18px;
+    text-align: center;
+}
+
+.close-button:hover,
+.confirm-button:hover {
+    background-color: rgb(136, 255, 123);
+}
+  
+.close-button {
+    background-color: white;
+}
+  
+.close-button:hover {
+    background-color: #f8f8f8;;
+}
+
+.success-img,
+.failure-img {
+    width: 340px;
+    height: 340px;
+    margin-bottom: 10px;
+}
+
+.failure-img {
+    height: 320px;
+}
