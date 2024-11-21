@@ -76,9 +76,8 @@ class Surveyresponses(models.Model):
 
 class Rewards(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
-    survey = models.ForeignKey('Surveys', on_delete=models.CASCADE)
     points = models.IntegerField(db_column='Points')
-    start = models.DateTimeField(db_column='Start')
+    start = models.DateTimeField(db_column='Start', auto_now_add=True)
     end = models.DateTimeField(db_column='End', blank=True, null=True)
     title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)
     image = models.CharField(db_column='Image', max_length=500, blank=True, null=True)
@@ -90,17 +89,16 @@ class Rewards(models.Model):
 
 class Percentdiscountreward(models.Model):
     reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
+    product = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
     percent = models.DecimalField(db_column='Percent', max_digits=10, decimal_places=2)
 
     class Meta:
         managed = False
         db_table = 'percentdiscountreward'
-        models.UniqueConstraint(
-            fields=['reward'], name='unique_percent_discount'
-        )
 
 class Pricediscountreward(models.Model):
     reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
+    product = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
     price = models.DecimalField(db_column='Price', max_digits=10, decimal_places=2)
 
     class Meta:
@@ -109,8 +107,8 @@ class Pricediscountreward(models.Model):
 
 class Productupgradereward(models.Model):
     reward = models.OneToOneField('Rewards', on_delete=models.CASCADE, db_column='Reward_ID', primary_key=True)
-    prevproduct = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='PrevProduct_ID')
-    nextproduct = models.ForeignKey(Products, on_delete=models.CASCADE, db_column='NextProduct_ID', related_name='productupgradereward_nextproduct_set')
+    prevproduct = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='PrevProduct_ID')
+    nextproduct = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='NextProduct_ID')
 
     class Meta:
         managed = False
@@ -127,8 +125,9 @@ class Exclusiveproductreward(models.Model):
 class Rewardtransaction(models.Model):
     transaction_id = models.AutoField(db_column='Transaction_ID', primary_key=True)
     user = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='User_ID')
-    reward = models.ForeignKey(Rewards, on_delete=models.CASCADE, db_column='Reward_ID')
+    reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
     date = models.DateTimeField(db_column='Date')
+    active = models.IntegerField(db_column='Active')
 
     class Meta:
         managed = False
@@ -217,13 +216,14 @@ class CustomerStats(models.Model):
 class Percentdiscountrewardview(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
     points = models.IntegerField(db_column='Points')
-    start = models.DateTimeField(db_column='Start')
+    start = models.DateTimeField(db_column='Start', blank=True, null=True)
     end = models.DateTimeField(db_column='End', blank=True, null=True)
     title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)
     image = models.CharField(db_column='Image', max_length=500, blank=True, null=True)
     description = models.TextField(db_column='Description', blank=True, null=True)
     percent = models.DecimalField(db_column='Percent', max_digits=10, decimal_places=2)
 
+    product_id = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
     productname = models.CharField(db_column='ProductName', max_length=25)
     productimage = models.CharField(db_column='ProductImage', max_length=500, blank=True, null=True)
     productdescription = models.TextField(db_column='ProductDescription', blank=True, null=True)
@@ -236,13 +236,14 @@ class Percentdiscountrewardview(models.Model):
 class Pricediscountrewardview(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
     points = models.IntegerField(db_column='Points')
-    start = models.DateTimeField(db_column='Start')
+    start = models.DateTimeField(db_column='Start', blank=True, null=True)
     end = models.DateTimeField(db_column='End', blank=True, null=True)
     title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)
     image = models.CharField(db_column='Image', max_length=500, blank=True, null=True)
     description = models.TextField(db_column='Description', blank=True, null=True)
     price = models.DecimalField(db_column='DiscountPrice', max_digits=10, decimal_places=2)
 
+    product_id = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
     productname = models.CharField(db_column='ProductName', max_length=25)
     productimage = models.CharField(db_column='ProductImage', max_length=500, blank=True, null=True)
     productdescription = models.TextField(db_column='ProductDescription', blank=True, null=True)
@@ -255,14 +256,16 @@ class Pricediscountrewardview(models.Model):
 class Productupgraderewardview(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
     points = models.IntegerField(db_column='Points')
-    start = models.DateTimeField(db_column='Start')
+    start = models.DateTimeField(db_column='Start', blank=True, null=True)
     end = models.DateTimeField(db_column='End', blank=True, null=True)
 
+    prevproduct_id = models.ForeignKey('Products', on_delete=models.CASCADE, related_name='PrevProductView_ID')
     prevproductname = models.CharField(db_column='PrevProductName', max_length=25)
     previmage = models.CharField(db_column='PrevProductImage', max_length=500, blank=True, null=True)
     prevdescription = models.TextField(db_column='PrevProductDescription', blank=True, null=True)
     prevprice = models.DecimalField(db_column='PrevPrice', max_digits=10, decimal_places=2)
 
+    nextproduct_id = models.ForeignKey('Products', on_delete=models.CASCADE, related_name='NextProductView_ID')
     nextproductname = models.CharField(db_column='NextProductName', max_length=25)
     nextimage = models.CharField(db_column='NextProductImage', max_length=500, blank=True, null=True)
     nextdescription = models.TextField(db_column='NextProductDescription', blank=True, null=True)
@@ -275,9 +278,13 @@ class Productupgraderewardview(models.Model):
 class Exclusiveproductrewardview(models.Model):
     reward_id = models.AutoField(db_column='Reward_ID', primary_key=True)
     points = models.IntegerField(db_column='Points')
-    start = models.DateTimeField(db_column='Start')
+    start = models.DateTimeField(db_column='Start', blank=True, null=True)
     end = models.DateTimeField(db_column='End', blank=True, null=True)
+    title = models.CharField(db_column='Title', max_length=255, blank=True, null=True)
+    image = models.CharField(db_column='Image', max_length=500, blank=True, null=True)
+    description = models.TextField(db_column='Description', blank=True, null=True)
 
+    product_id = models.ForeignKey('Products', on_delete=models.CASCADE, db_column='Product_ID')
     productname = models.CharField(db_column='ProductName', max_length=25)
     productimage = models.CharField(db_column='ProductImage', max_length=500, blank=True, null=True)
     productdescription = models.TextField(db_column='ProductDescription', blank=True, null=True)
@@ -295,6 +302,7 @@ class Rewardtransactionview(models.Model):
     title = models.CharField(db_column='RewardTitle', max_length=255, blank=True, null=True)
     image = models.CharField(db_column='RewardImage', max_length=500, blank=True, null=True)
     date = models.DateTimeField(db_column='Date')
+    active = models.IntegerField(db_column='Active')
 
     class Meta:
         managed = False

@@ -63,27 +63,27 @@ INSERT INTO surveys (`name`, `description`, `created_date`, `expiry_date`)
 VALUES ('Service Satisfaction', 'Customer thoughts on the eco-initiative program', '2024-09-01', '2024-12-31');
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 200, NOW(), "PercentDiscountTest"
+	200, NOW(), "PercentDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 300, NOW(), "PriceDiscountTest"
+	300, NOW(), "PriceDiscountTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 400, NOW(), "UpgradeTest"
+	400, NOW(), "UpgradeTest"
 );
 
 INSERT INTO REWARDS (
-	survey_id, Points, Start, Title
+	Points, Start, Title
 ) VALUES (
-	1, 500, NOW(), "ExclusiveTest"
+	500, NOW(), "ExclusiveTest"
 );
 
 INSERT INTO PERCENTDISCOUNTREWARD (
@@ -111,27 +111,27 @@ INSERT INTO EXCLUSIVEPRODUCTREWARD (
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 200, NOW()
+	1, 200, NOW(), 0
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 201, NOW()
+	1, 201, NOW(), 1
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 202, NOW()
+	1, 202, NOW(), 0
 );
 
 INSERT INTO REWARDTRANSACTION (
-	User_ID, Reward_ID, Date
+	User_ID, Reward_ID, Date, Active
 ) VALUES (
-	1, 203, NOW()
+	1, 203, NOW(), 1
 );
 
 INSERT INTO feedback (`user_id`, `date_submitted`, `product_id`, `service_rating`, `comments`, `sustainability_score`) 

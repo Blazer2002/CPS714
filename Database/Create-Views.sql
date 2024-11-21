@@ -43,7 +43,8 @@ CREATE VIEW PRICEDISCOUNTREWARDVIEW AS
             ON 	P.Product_ID = PRI.Product_ID;
 
 CREATE VIEW PRODUCTUPGRADEREWARDVIEW AS
-	SELECT 	
+	SELECT
+		R.Reward_ID AS Reward_ID,
         R.Points AS Points,
         R.Start AS Start,
         R.End AS End,
@@ -93,6 +94,7 @@ CREATE VIEW EXCLUSIVEPRODUCTREWARDVIEW AS
 CREATE VIEW REWARDTRANSACTIONVIEW AS
 	SELECT 
 		RT.Transaction_ID AS Transaction_ID,
+        RT.Active AS Active,
         RT.Date AS Date,
 	
 		R.Reward_ID AS Reward_ID,

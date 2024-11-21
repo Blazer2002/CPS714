@@ -67,14 +67,12 @@ CREATE TABLE SurveyResponses (
 -- Create Rewards table
 CREATE TABLE REWARDS (
 	Reward_ID			Int					NOT NULL AUTO_INCREMENT,
-    survey_id			Int					NOT NULL,
 	Points				Int					NOT NULL,
 	Start				DateTime			NOT NULL,
 	End					DateTime			NULL,
 	Title				VARCHAR(255),
 	Image				Varchar(500)		NULL,
 	Description 		Text				NULL,
-    FOREIGN KEY (survey_id) REFERENCES Surveys(survey_id),
     
 	CONSTRAINT 			RewardPK			PRIMARY KEY(Reward_ID)
 );
@@ -156,6 +154,7 @@ CREATE TABLE REWARDTRANSACTION (
 	User_ID				Int				NOT NULL,
 	Reward_ID			Int				NOT NULL,
 	Date				DateTime		NOT NULL,
+    Active				TINYINT			NOT NULL,
 
 	CONSTRAINT 			TransactionPK	PRIMARY KEY(Transaction_ID),
 	CONSTRAINT 			UserRewardFK	FOREIGN KEY(User_ID)
@@ -165,7 +164,8 @@ CREATE TABLE REWARDTRANSACTION (
 	CONSTRAINT 			RewardUserFK	FOREIGN KEY(Reward_ID)
 										REFERENCES REWARDS(Reward_ID)
  											ON UPDATE NO ACTION
-											ON DELETE NO ACTION
+											ON DELETE NO ACTION,
+	CONSTRAINT 			ActiveValues		CHECK (Active IN (0, 1))
 );
 
 ALTER TABLE REWARDTRANSACTION AUTO_INCREMENT = 300;

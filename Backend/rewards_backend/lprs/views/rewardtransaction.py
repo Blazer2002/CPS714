@@ -12,13 +12,13 @@ def get_all_rewardtransactions(request):
     fetch_data = Rewardtransactionview.objects.all()
     serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
-# Get all reward by users
+# Get all reward transactions by user
 @api_view(['GET'])
 def get_all_reward_by_user(request, userid):
     fetch_data = Rewardtransactionview.objects.filter(user_id=userid)
     serializer = RewardTransactionViewSerializer(fetch_data, many=True)
     return Response(serializer.data)
-# Get all reward by reward
+# Get all reward transactions by reward
 @api_view(['GET'])
 def get_all_reward_by_reward(request, rewardid):
     fetch_data = Rewardtransactionview.objects.filter(reward_id=rewardid)
@@ -27,12 +27,8 @@ def get_all_reward_by_reward(request, rewardid):
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
-    serializer = RewardTransactionViewSerializer(data=request.data)
+    serializer = RewardTransactionSerializer(data=request.data)
 
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    serializer = RewardsSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -48,16 +44,16 @@ def specific_rewardtransaction(request, pk):
     
     # Get the specified user
     if request.method == 'GET':
-        serializer = RewardTransactionSerializer(rewardtransaction)
+        serializer = RewardTransactionViewSerializer(rewardtransaction)
         return Response(serializer.data)
     
-    #Update details of the specified reward
+    #Update details of the specified reward transaction
     elif request.method == 'PUT':
         serializer = RewardTransactionSerializer(rewardtransaction, data=request.data)
-
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     # Delete the user
