@@ -50,7 +50,7 @@ function RewardDetails() {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8000/lprs/rewards/${reward_id}`)
+        fetch(`http://localhost:8000/lprs/rewards/200`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

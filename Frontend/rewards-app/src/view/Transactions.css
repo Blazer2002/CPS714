@@ -1,0 +1,26 @@
+.reward-transactions-container {
+    margin-left: 1%;
+    margin-right: 10%;
+}
+
+button {
+    margin-left: auto;
+    padding: 1%;
+    background-color: #C7FFCD;
+}
+
+button:hover {
+    background-color: #80FF8D;
+}
+
+.each-transaction {
+    border: 2px solid black;
+    padding: 1%;
+}
+
+.each-transaction {
+    display: flex;
+    align-items: center; /* Vertically center the items */
+    gap: 10px; /* Optional: Space between items */
+    margin-bottom: 20px; /* Optional: Space between each transaction entry */
+}

@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import Home from './view/Home'
 import Rewards from './view/Rewards'
 import RewardDetails from './view/RewardDetails';
+import Transactions from './view/Transactions';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/rewards' element={<Rewards />} />
         <Route path='/rewards/:reward_id' element={<RewardDetails />} />
+        <Route path='/transactions' element={<Transactions />} />
         </Routes>
       </div>
     </Router>
