@@ -22,9 +22,9 @@ urlpatterns = [
     path('rewards/post/<int:type>', create_reward, name='create_reward'),
     path('rewards/<int:pk>', specific_reward, name='specific_reward'),
 
-    path('rewardtransactions/get-all/', get_all_rewardtransactions, name = 'get_all_rewardtransactions'),
-    path('rewardbyuser/get-all/<int:userid>', get_all_reward_by_user, name = 'get_all_reward_by_user'),
-    path('rewardbyreward/get-all/<int:rewardid>', get_all_reward_by_reward, name = 'get_all_reward_by_reward'),
-    path('rewardtransactions/post/', create_rewardtransaction, name='create_rewardtransaction'),
-    path('rewardtransactions/<int:pk>', specific_rewardtransaction, name='specific_rewardtransaction'),
+    # path('rewardtransactions/get-all/', get_all_rewardtransactions, name = 'get_all_rewardtransactions'),
+    # path('rewardbyuser/get-all/<int:userid>', get_all_reward_by_user, name = 'get_all_reward_by_user'),
+    # path('rewardbyreward/get-all/<int:rewardid>', get_all_reward_by_reward, name = 'get_all_reward_by_reward'),
+    # path('rewardtransactions/post/', create_rewardtransaction, name='create_rewardtransaction'),
+    # path('rewardtransactions/<int:pk>', specific_rewardtransaction, name='specific_rewardtransaction'),
 ]

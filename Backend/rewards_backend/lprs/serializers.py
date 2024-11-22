@@ -40,28 +40,3 @@ class ExclusiveProductRewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exclusiveproductreward
         fields = '__all__'
-
-class PercentDiscountRewardViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Percentdiscountrewardview
-        fields = '__all__'
-
-class PriceDiscountRewardViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Pricediscountrewardview
-        fields = '__all__'
-
-class ProductUpgradeRewardViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Productupgraderewardview
-        fields = '__all__'
-
-class ExclusiveProductRewardViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Exclusiveproductrewardview
-        fields = '__all__'
-
-class RewardTransactionViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Rewardtransactionview
-        fields = '__all__'
