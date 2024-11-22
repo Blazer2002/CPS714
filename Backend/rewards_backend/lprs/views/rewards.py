@@ -260,27 +260,26 @@ def specific_reward(request, pk):
         return Response(status=status.HTTP_404_BAD_REQUEST)
     
     # Fetch reward serializer data
-    reward_serializer = RewardsSerializer(reward, data=request.data)
-    if not reward_serializer.is_valid():
-        return Response(reward_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    reward_serializer = RewardsSerializer(reward)
     
     # Edit Reward Keys - Avoid Duplications in Join Operator
     reward_json = reward_serializer.data
-    print(reward_serializer.data)
-    return Response(reward_json)
-    reward_json["reward_id"] = reward_json.pop("reward")
-    reward_json["rewardname"] = reward_json.pop("title")
-    reward_json["rewardimage"] = reward_json.pop("image")
-    reward_json["rewarddescription"] = reward_json.pop("description")
+
+    if(reward_json.get("reward")):
+        reward_json["reward_id"] = reward_json.pop("reward")
+    if(reward_json.get("title")):
+        reward_json["rewardname"] = reward_json.pop("title")
+    if(reward_json.get("image")):
+        reward_json["rewardimage"] = reward_json.pop("image")
+    if(reward_json.get("description")):
+        reward_json["rewarddescription"] = reward_json.pop("description")
     
     # Get the specified user
     if request.method == 'GET':
         if(Percentdiscountreward.objects.filter(pk=pk).exists()):
             # Fetch price reward serializer data
             percent_discount = Percentdiscountreward.objects.get(pk=pk)
-            percent_serializer = PercentDiscountRewardSerializer(percent_discount, data=request.data)
-            if not percent_serializer.is_valid():
-                return Response(percent_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            percent_serializer = PercentDiscountRewardSerializer(percent_discount)
             
             # Change key names in JSON for clear description
             percent_json = percent_serializer.data
@@ -290,7 +289,7 @@ def specific_reward(request, pk):
 
             # Edit Product Keys - Avoid Duplications in Join Operator
             product = Products.objects.get(pk=percent_json['product_id'])
-            products_serializer = ProductsSerializer(product, data=request.data)
+            products_serializer = ProductsSerializer(product)
             product_json = products_serializer.data
 
             product_json.pop("product_id")
@@ -303,30 +302,91 @@ def specific_reward(request, pk):
             percent_json.update(product_json.copy())
             return Response(percent_json)
 
+        elif(Pricediscountreward.objects.filter(pk=pk).exists()):
+            price_discount = Pricediscountreward.objects.get(pk=pk)
+            price_serializer = PriceDiscountRewardSerializer(price_discount)
 
+            # Change key names in JSON for clear description
+            price_json = price_serializer.data
+            price_json.pop("reward")
+            price_json["product_id"] = price_json.pop("product")
+            price_json["discountprice"] = price_json.pop("price")
+
+            # Edit Product Keys - Avoid Duplications in Join Operator
+            product = Products.objects.get(pk=price_json['product_id'])
+            products_serializer = ProductsSerializer(product)
+            product_json = products_serializer.data
+
+            product_json.pop("product_id")
+            product_json["productprice"] = product_json.pop("price")
+            product_json["productimage"] = product_json.pop("image")
+            product_json["productdescription"] = product_json.pop("description")
+
+            # Join Reward and Product to Price Entry
+            price_json.update(reward_json.copy())
+            price_json.update(product_json.copy())
+            return Response(price_json)
         
-        # elif(Pricediscountreward.objects.filter(pk=pk).exists()):
-        #     percent_discount = Percentdiscountreward.objects.get(pk=pk)
-        #     serializer = PercentDiscountRewardSerializer(percent_discount, data=request.data)
-        #     if serializer.is_valid():
-        #         serializer.save()
-        #     return Response(serializer.data)
+        elif(Productupgradereward.objects.filter(pk=pk).exists()):
+            product_upgrade = Productupgradereward.objects.get(pk=pk)
+            upgrade_serializer = ProductUpgradeRewardSerializer(product_upgrade)
+            upgrade_json = upgrade_serializer.data
+            upgrade_json.pop("reward")
+            upgrade_json["prev_product_id"] = upgrade_json.pop("prevproduct")
+            upgrade_json["next_product_id"] = upgrade_json.pop("nextproduct")
+
+            # Edit Previous Product Keys - Avoid Duplications in Join Operator
+            prev_product = Products.objects.get(pk=upgrade_json['prev_product_id'])
+            prev_product_serializer = ProductsSerializer(prev_product)
+            prev_product_json = prev_product_serializer.data
+
+            prev_product_json.pop("product_id")
+            prev_product_json["prevproductprice"] = prev_product_json.pop("price")
+            prev_product_json["prevproductimage"] = prev_product_json.pop("image")
+            prev_product_json["prevproductdescription"] = prev_product_json.pop("description")
+
+            # Edit Next Product Keys - Avoid Duplications in Join Operator
+            next_product = Products.objects.get(pk=upgrade_json['next_product_id'])
+            next_products_serializer = ProductsSerializer(next_product)
+            next_product_json = next_products_serializer.data
+
+            next_product_json.pop("product_id")
+            next_product_json["nextproductprice"] = next_product_json.pop("price")
+            next_product_json["nextproductimage"] = next_product_json.pop("image")
+            next_product_json["nextproductdescription"] = next_product_json.pop("description")
+
+            # Join Reward and Product to Upgrade Entry
+            upgrade_json.update(reward_json.copy())
+            upgrade_json.update(prev_product_json.copy())
+            upgrade_json.update(next_product_json.copy())
+
+            return Response(upgrade_json)
         
-        # elif(Productupgradereward.objects.filter(pk=pk).exists()):
-        #     product_upgrade = Productupgradereward.objects.get(pk=pk)
-        #     serializer = ProductUpgradeRewardSerializer(product_upgrade, data=request.data)
-        #     if serializer.is_valid():
-        #         serializer.save()
-        #     return Response(serializer.data)
+        elif(Exclusiveproductreward.objects.filter(pk=pk).exists()):
+            exclusive = Exclusiveproductreward.objects.get(pk=pk)
+            exclusive_serializer = ExclusiveProductRewardSerializer(exclusive)
+            exclusive_json = exclusive_serializer.data
         
-        # elif(Exclusiveproductreward.objects.filter(pk=pk).exists()):
-        #     exclusive = Exclusiveproductreward.objects.get(pk=pk)
-        #     serializer = ExclusiveProductRewardSerializer(exclusive, data=request.data)
-        #     if serializer.is_valid():
-        #         serializer.save()
-        #     return Response(serializer.data)
+            exclusive_json["reward_id"] = exclusive_json.pop("reward")
+            exclusive_json["product_id"] = exclusive_json.pop("product")
+
+            # Edit Product Keys - Avoid Duplications in Join Operator
+            product = Products.objects.get(pk=exclusive_json['product_id'])
+            products_serializer = ProductsSerializer(product)
+            product_json = products_serializer.data
+
+            product_json.pop("product_id")
+            product_json["productprice"] = product_json.pop("price")
+            product_json["productimage"] = product_json.pop("image")
+            product_json["productdescription"] = product_json.pop("description")
+
+            # Join Reward and Product to Exclusive Entry
+            exclusive_json.update(reward_json.copy())
+            exclusive_json.update(product_json.copy())
+
+            return Response(exclusive_json)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(reward_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
 
