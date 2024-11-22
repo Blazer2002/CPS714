@@ -1,0 +1,31 @@
+button {
+    margin-left: auto;
+    padding: 1%;
+    background-color: #C7FFCD;
+}
+
+button:hover {
+    background-color: #80FF8D;
+    cursor: pointer;
+}
+
+.transaction-image {
+    display: flex;
+    height: 40px;
+    text-align: center;
+    align-items: center;
+    border: 1px solid black;
+}
+
+.transaction-card {
+    display: flex;
+    width: 100%;
+    border: 2px solid black;
+    padding: 1%;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.transaction-info {
+    margin-left: 20px;
+}
