@@ -16,17 +16,26 @@
     text-align: center;
 }
 
+.banner h1 {
+    font-size: 40px;
+}
+
 .card-container {
     display: flex;
+    width: 90%;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: left;
     gap: 5px;
     padding: 20px;
     margin: 0 auto;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .reward-transactions {
-    margin-left: 80%;
+    margin-left: 75%;
     padding: 1%
+}
+
+.reward-transactions:hover {
+    cursor: pointer;
 }

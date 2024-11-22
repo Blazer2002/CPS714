@@ -2,7 +2,7 @@ import React from 'react'
 import './Rewards.css'
 import RewardCard from '../components/RewardCard.js'
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function Rewards() {
     const [rewards, setReward] = useState([]);
@@ -12,7 +12,7 @@ function Rewards() {
     const navigate = useNavigate();
     
     const rewardsTransactions = () => {
-        navigate('/Transactions');
+        navigate('/rewards/transactions');
     };
 
     useEffect(() => {
@@ -34,19 +34,19 @@ function Rewards() {
     }, []);
 
     if (loading) {
-        return <p>Loading rewards...</p>;
+        console.log("Loading rewards...")
     }
 
     if (error) {
-        return <p>Error loading rewards from api: {error}</p>;
+        return <div>Error loading rewards from api: {error}</div>;
     }
 
     
     return (
         <div className='rewards-container'>
-            <button className="reward-transactions" onClick={rewardsTransactions}>Reward Transactions</button>
             <div className='banner'>
                 <h1>Rewards</h1>
+                <button className="reward-transactions" onClick={rewardsTransactions}>Reward Transactions</button>
             </div>
             <div className='card-container'>
                 {rewards.length > 0 ? (
