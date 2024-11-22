@@ -75,7 +75,7 @@
     flex-direction: row;
 }
 
-.reward-details .redemption-button {
+.reward-details .redeem-button-container {
     padding: 10px;
     display: flex;
     justify-content: center;
@@ -83,7 +83,7 @@
     text-align: center;
 }
 
-.reward-details .reward-redemption {
+.reward-details .redeem-button {
     width: 260px;
     border-radius: 15px;
     background-color: rgba(136, 255, 123, 0.624);
@@ -92,7 +92,7 @@
     padding: 10px;
 }
 
-.reward-details .reward-redemption:hover {
+.reward-details .redeem-button:hover {
     cursor: pointer;
     background-color: rgb(136, 255, 123);
 }

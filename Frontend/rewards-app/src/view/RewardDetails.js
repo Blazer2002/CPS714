@@ -112,8 +112,8 @@ function RewardDetails({ user }) {
                     <div className='reward-tags'>
                         {/* tags */}
                     </div>
-                    <div className='redemption-button'>
-                        <button type='button' className='reward-redemption' onClick={openPopup}>Redeem</button>
+                    <div className='redeem-button-container'>
+                        <button type='button' className='redeem-button' onClick={openPopup}>Redeem</button>
                     </div>
                 </div>
             </div>

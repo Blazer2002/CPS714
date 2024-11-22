@@ -24,7 +24,7 @@ function TransactionCard( { transaction, active } ) {
                 )}
             </div>
             {active && (
-                <button type="button" onClick={() => setShowTransactionPopup(true)}>Redeem</button>
+                <button className="redemption-button" onClick={() => setShowTransactionPopup(true)}>Redeem</button>
             )}
             {showTransactionPopup && (
                 <TransactionPopup

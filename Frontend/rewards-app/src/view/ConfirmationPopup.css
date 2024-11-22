@@ -76,10 +76,8 @@
 }
   
 .popup-content .button-container {
-    display: grid;
-    justify-content: space-between;
-    grid-template-columns: auto auto;
-
+    display: flex;
+    justify-content: space-around;
 }
   
 .close-button,

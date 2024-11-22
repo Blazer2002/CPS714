@@ -1,10 +1,10 @@
-button {
+.redemption-button {
     margin-left: auto;
     padding: 1%;
     background-color: #C7FFCD;
 }
 
-button:hover {
+.transaction-card .redemption-button:hover {
     background-color: #80FF8D;
     cursor: pointer;
 }

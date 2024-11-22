@@ -46,7 +46,7 @@ function Rewards() {
         <div className='rewards-container'>
             <div className='banner'>
                 <h1>Rewards</h1>
-                <button className="reward-transactions" onClick={rewardsTransactions}>Reward Transactions</button>
+                <button className="transaction-history" onClick={rewardsTransactions}>Reward Transactions</button>
             </div>
             <div className='card-container'>
                 {rewards.length > 0 ? (

@@ -11,7 +11,9 @@
 .banner {
     width: 100%;
     height: 60px;
-    display: flex;
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: auto auto;
     align-items: center;
     text-align: center;
 }
@@ -31,11 +33,12 @@
     /* border: 1px solid black; */
 }
 
-.reward-transactions {
-    margin-left: 75%;
-    padding: 1%
+.transaction-history {
+    background-color: #C7FFCD;
+    padding: 1%;
 }
 
-.reward-transactions:hover {
+.transaction-history:hover {
+    background-color: #80FF8D;
     cursor: pointer;
 }
