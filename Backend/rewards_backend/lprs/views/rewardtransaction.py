@@ -5,52 +5,51 @@ from ..models import *
 from ..serializers import *
 import json
 
-# Note: Update lprs/serializers.py and lprs/urls.py
-
 # Get all reward transactions
 @api_view(['GET'])
 def get_all_rewardtransactions(request):
-    rt_data = Rewardtransaction.objects.all()
-    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
+    rewardtransaction = Rewardtransaction.objects.all().order_by('-date')
+    rewardtransaction_data = RewardTransactionSerializer(rewardtransaction, many=True).data
+    
+    for entry in rewardtransaction_data:
+        # Get the User and Reward Entry by Foreign Key
+        user = Users.objects.get(pk=entry["user"])
+        user_data = UsersSerializer(user).data
 
-    rt_list = list()
+        reward = Rewards.objects.get(pk=entry["reward"])
+        reward_data = RewardsSerializer(reward).data
 
-    for jsn in rt_serializer.data:
-        r_id = jsn['reward']
-        reward = Rewards.objects.filter(pk=r_id)
-        r_serializer = RewardsSerializer(reward)
-        data = jsn
-        data.update(r_serializer.data)
-        data.pop('reward')
-        rt_list.append(data)
+        # Remove Duplicate Users and Rewards ID
+        entry.pop("user")
+        entry.pop("reward")
 
-    return Response(rt_list)
+        # Join User and Reward to Transaction Entry
+        entry.update(user_data.copy())
+        entry.update(reward_data.copy())
+
+    return Response(rewardtransaction_data)
+
 # Get all reward transactions by user
+# Query by active or inactive transactions
 @api_view(['GET'])
-def get_all_reward_by_user(request, userid):
-    rt_data = Rewardtransaction.objects.filter(user_id=userid)
-    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
-    r_id = rt_serializer.data['reward_id']
+def get_all_reward_by_user(request, active, userid):
+    rewardtransaction = Rewardtransaction.objects.filter(user_id=userid, active=active).order_by('-date')
+    rewardtransaction_data = RewardTransactionSerializer(rewardtransaction, many=True).data
+    
+    for entry in rewardtransaction_data:
+        # Get the Rewards Entry
+        reward = Rewards.objects.get(pk=entry["reward"])
+        reward_data = RewardsSerializer(reward).data
 
-    r_data = Rewards.objects.filter(pk=r_id)
-    r_serializer = RewardsSerializer(r_data, many=True)
+        # Remove Duplicate Rewards ID
+        entry.pop("reward")
 
-    viewdata = rt_serializer.data
-    viewdata.update(r_serializer.data)
+        # Join Reward to Transaction Entry
+        entry.update(reward_data.copy())
 
-    return Response(viewdata)
-# Get all reward transactions by reward
-@api_view(['GET'])
-def get_all_reward_by_reward(request, rewardid):
-    rt_data = Rewardtransaction.objects.filter(reward_id=rewardid)
-    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
-    r_id = rt_serializer.data['reward_id']
+    return Response(rewardtransaction_data)
 
-    r_data = Rewards.objects.filter(pk=r_id)
-    r_serializer = RewardsSerializer(r_data, many=True)
 
-    viewdata = rt_serializer.data
-    viewdata.update(r_serializer.data)
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
@@ -60,6 +59,7 @@ def create_rewardtransaction(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 # Get / Update / Delete a specific reward transaction
 @api_view(['GET', 'PUT', 'DELETE'])
 def specific_rewardtransaction(request, pk):

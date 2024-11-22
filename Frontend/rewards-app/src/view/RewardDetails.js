@@ -84,11 +84,11 @@ function RewardDetails() {
             </div>
             <div className="reward-info">
                 <div className="reward-image">
-                    <img src={reward.image} alt="Reward Image" />
+                    <img src={reward.rewardimage} alt="Reward Image" />
                 </div>
                 <div className="reward-details">
                     <div className='reward-name' >
-                        {reward.title}
+                        {reward.rewardname}
                     </div>
                     <div className='reward-points'>
                         {reward.points} Points
@@ -102,7 +102,7 @@ function RewardDetails() {
                 </div>
             </div>
             <div className="reward-description">
-                {reward.description}
+                {reward.rewarddescription}
             </div>
             <ConfirmationPopup 
                 reward={reward} 
