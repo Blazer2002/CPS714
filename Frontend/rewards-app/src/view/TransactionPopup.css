@@ -37,10 +37,10 @@
     align-items: center;
 }
 
-.reward-title {
+.transaction-title {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .reward-exp-date {
@@ -111,7 +111,8 @@
     flex-direction: column;
     width: 100%;
     gap: 20px;
-    justify-content: flex-end;
+    justify-items: center;
+    align-items: center;
 }
 
 .email-button,

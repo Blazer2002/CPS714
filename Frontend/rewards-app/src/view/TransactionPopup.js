@@ -1,15 +1,17 @@
 import React from "react";
 import './TransactionPopup.css'
 
-function TransactionPopup({ reward, isOpen, onClose}) {
+function TransactionPopup({ transaction, isOpen, onClose}) {
     if (!isOpen) return null;
+    console.log(transaction);
 
     return (
         <div className="transac-overlay">
             <div className="transac-content">
             <button className="transac-close-button" onClick={onClose}>X</button>
                 <div className="left-col">
-                    <h2 className="reward-title">{reward.title}</h2>
+                    {/* reward.rewardname */}
+                    <h2 className="transaction-title">Confirmation: Transaction #{transaction.transaction_id}</h2>
                     <h4 className="reward-exp-date">Thank you for your reward redemption!</h4>
                     <div className="textbox">
                         <p className="description-text">Description</p>
