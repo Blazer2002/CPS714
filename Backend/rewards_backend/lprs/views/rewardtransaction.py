@@ -95,6 +95,8 @@ def specific_rewardtransaction(request, pk):
     
     #Update details of the specified reward transaction
     elif request.method == 'PUT':
+        json_data = request.data
+        json_data["reward"] = json_data["reward_id"]
         serializer = RewardTransactionSerializer(rewardtransaction, data=request.data)
         if serializer.is_valid():
             serializer.save()
