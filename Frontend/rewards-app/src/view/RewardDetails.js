@@ -6,15 +6,18 @@ import ConfirmationPopup from './ConfirmationPopup';
 import SuccessPopup from './SuccessPopup';
 import FailurePopup from './FailurePopup';
 import TransactionPopup from './TransactionPopup';
+import { createTransaction } from '../createTransaction';
 
-function RewardDetails() {
+function RewardDetails({ user }) {
     const { reward_id } = useParams();
     const [reward, setReward] = useState(null);
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [showTransactionPopup, setShowTransactionPopup] = useState(false);
     const [redeemStatus, setRedeemStatus] = useState(null);
+    const [newTransaction, setNewTransaction] = useState(null);
 
     const navigate = useNavigate();
     
@@ -30,6 +33,10 @@ function RewardDetails() {
         setIsPopupOpen(false);
     };
 
+    const logTransaction = (transaction) => {
+        setNewTransaction(transaction);
+    }
+
     const handleSuccess = () => {
         setShowTransactionPopup(true);
     }
@@ -40,32 +47,41 @@ function RewardDetails() {
     };
 
     const handleRedeemConfirmation = () => {
-        if (200 < reward.points) {
-            {/* user.points, fetch current user */}
+        if (user.points < reward.points) {
+            console.log("User doesn't have enough points");
             setRedeemStatus(false);
         } else {
-            setRedeemStatus(true);
+            createTransaction(user.user_id, reward.reward_id)
+            .then(transaction => {
+                setRedeemStatus(true);
+                logTransaction(transaction);
+            })
+            .catch(error => {
+                setRedeemStatus(false);
+                console.error("Error creating transaction:", error);
+            });
+
         }
         setIsPopupOpen(false);
     };
 
     useEffect(() => {
-        fetch(`http://localhost:8000/lprs/rewards/200`)
+        fetch(`http://localhost:8000/lprs/rewards/${reward_id}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
-            .then(data => {
-                setReward(data);
+            .then(rewardData => {
+                setReward(rewardData);
                 setLoading(false);
             })
             .catch(error => {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [reward_id]);
+    }, [reward_id, user]);
 
     if (loading) {
         return <p>Loading reward details...</p>;
@@ -84,7 +100,7 @@ function RewardDetails() {
             </div>
             <div className="reward-info">
                 <div className="reward-image">
-                    <img src={reward.rewardimage} alt="Reward Image" />
+                    <img src={reward.image} alt="Reward Image" />
                 </div>
                 <div className="reward-details">
                     <div className='reward-name' >
@@ -94,7 +110,7 @@ function RewardDetails() {
                         {reward.points} Points
                     </div>
                     <div className='reward-tags'>
-                        
+                        {/* tags */}
                     </div>
                     <div className='redemption-button'>
                         <button type='button' className='reward-redemption' onClick={openPopup}>Redeem</button>
@@ -102,9 +118,13 @@ function RewardDetails() {
                 </div>
             </div>
             <div className="reward-description">
-                {reward.rewarddescription}
+                {reward.description == null && (
+                    <>No Description</>
+                )}
+                {reward.description}
             </div>
             <ConfirmationPopup 
+                user={user}
                 reward={reward} 
                 isOpen={isPopupOpen} 
                 onClose={closePopup} 
@@ -124,9 +144,9 @@ function RewardDetails() {
                 
             )}
 
-            {showTransactionPopup && (
+            {showTransactionPopup && newTransaction && (
                 <TransactionPopup
-                    reward={reward}
+                    transaction={newTransaction}
                     isOpen={showTransactionPopup}
                     onClose={closeTransactionPopup}/>
             )}
