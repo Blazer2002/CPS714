@@ -124,8 +124,8 @@ class Rewardtransaction(models.Model):
     transaction_id = models.AutoField(db_column='Transaction_ID', primary_key=True)
     user = models.ForeignKey('Users', on_delete=models.CASCADE, db_column='User_ID')
     reward = models.ForeignKey('Rewards', on_delete=models.CASCADE, db_column='Reward_ID')
-    date = models.DateTimeField(db_column='Date')
-    active = models.IntegerField(db_column='Active')
+    date = models.DateTimeField(db_column='Date', auto_now_add=True)
+    active = models.IntegerField(db_column='Active', default=1)
 
     class Meta:
         managed = False

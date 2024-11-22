@@ -24,6 +24,6 @@ urlpatterns = [
 
     path('rewardtransactions/get-all/', get_all_rewardtransactions, name = 'get_all_rewardtransactions'),
     path('rewardbyuser/<int:active>/<int:userid>', get_all_reward_by_user, name = 'get_all_reward_by_user'),
-    # path('rewardtransactions/post/', create_rewardtransaction, name='create_rewardtransaction'),
+    path('rewardtransactions/post/', create_rewardtransaction, name='create_rewardtransaction'),
     # path('rewardtransactions/<int:pk>', specific_rewardtransaction, name='specific_rewardtransaction'),
 ]

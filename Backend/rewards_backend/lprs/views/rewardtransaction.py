@@ -53,12 +53,20 @@ def get_all_reward_by_user(request, active, userid):
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
-    serializer = RewardTransactionSerializer(data=request.data)
+    # Edit keys to match reward transaction format
+    json_data = request.data
+    json_data["user"] = json_data["user_id"]
+    json_data["reward"] = json_data["reward_id"]
 
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # Check if entry is correct
+    serializer = RewardTransactionSerializer(data=json_data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Save entry to database
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 # Get / Update / Delete a specific reward transaction
 @api_view(['GET', 'PUT', 'DELETE'])
