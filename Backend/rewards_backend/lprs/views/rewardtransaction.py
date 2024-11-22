@@ -10,21 +10,47 @@ import json
 # Get all reward transactions
 @api_view(['GET'])
 def get_all_rewardtransactions(request):
-    fetch_data = Rewardtransactionview.objects.all()
-    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
-    return Response(serializer.data)
+    rt_data = Rewardtransaction.objects.all()
+    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
+
+    rt_list = list()
+
+    for jsn in rt_serializer.data:
+        r_id = jsn['reward']
+        reward = Rewards.objects.filter(pk=r_id)
+        r_serializer = RewardsSerializer(reward)
+        data = jsn
+        data.update(r_serializer.data)
+        data.pop('reward')
+        rt_list.append(data)
+
+    return Response(rt_list)
 # Get all reward transactions by user
 @api_view(['GET'])
 def get_all_reward_by_user(request, userid):
-    fetch_data = Rewardtransactionview.objects.filter(user_id=userid)
-    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
-    return Response(serializer.data)
+    rt_data = Rewardtransaction.objects.filter(user_id=userid)
+    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
+    r_id = rt_serializer.data['reward_id']
+
+    r_data = Rewards.objects.filter(pk=r_id)
+    r_serializer = RewardsSerializer(r_data, many=True)
+
+    viewdata = rt_serializer.data
+    viewdata.update(r_serializer.data)
+
+    return Response(viewdata)
 # Get all reward transactions by reward
 @api_view(['GET'])
 def get_all_reward_by_reward(request, rewardid):
-    fetch_data = Rewardtransactionview.objects.filter(reward_id=rewardid)
-    serializer = RewardTransactionViewSerializer(fetch_data, many=True)
-    return Response(serializer.data)
+    rt_data = Rewardtransaction.objects.filter(reward_id=rewardid)
+    rt_serializer = RewardTransactionSerializer(rt_data, many=True)
+    r_id = rt_serializer.data['reward_id']
+
+    r_data = Rewards.objects.filter(pk=r_id)
+    r_serializer = RewardsSerializer(r_data, many=True)
+
+    viewdata = rt_serializer.data
+    viewdata.update(r_serializer.data)
 # Create a new reward transaction
 @api_view(['POST'])
 def create_rewardtransaction(request):
@@ -40,7 +66,6 @@ def specific_rewardtransaction(request, pk):
      # Fetch the data of the reward using the primary key
     try:
         rewardtransaction = Rewardtransaction.objects.get(pk=pk)
-        reward = rewardtransaction.reward
     except Rewardtransaction.DoesNotExist:
         return Response(status=status.HTTP_404_BAD_REQUEST)
     
