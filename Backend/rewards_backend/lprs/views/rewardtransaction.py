@@ -79,17 +79,24 @@ def specific_rewardtransaction(request, pk):
     
     # Get the specified user
     if request.method == 'GET':
-        rt_serializer = RewardTransactionSerializer(rewardtransaction)
+        rewardtransaction_data = RewardTransactionSerializer(rewardtransaction).data
 
-        reward = rt_serializer.validated_data.get('Rewards')
-        r_serializer = RewardsSerializer(reward)
+        # Get the Rewards Entry
+        reward = Rewards.objects.get(pk=rewardtransaction_data["reward"])
+        reward_data = RewardsSerializer(reward).data
 
-        viewdata = rt_serializer.data
-        viewdata.update(r_serializer.data)
-        return Response(viewdata)
+        # Remove Duplicate Rewards ID
+        rewardtransaction_data.pop("reward")
+
+        # Join Reward to Transaction Entry
+        rewardtransaction_data.update(reward_data.copy())
+
+        return Response(rewardtransaction_data)
     
     #Update details of the specified reward transaction
     elif request.method == 'PUT':
+        json_data = request.data
+        json_data["reward"] = json_data["reward_id"]
         serializer = RewardTransactionSerializer(rewardtransaction, data=request.data)
         if serializer.is_valid():
             serializer.save()
