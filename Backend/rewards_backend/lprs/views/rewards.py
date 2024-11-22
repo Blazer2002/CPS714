@@ -4,7 +4,7 @@ from rest_framework import status
 from ..models import *
 from ..serializers import *
 
-import requests
+# import requests
 import json
 from django.urls import include, path
 
@@ -190,183 +190,68 @@ def get_all_exclusive_product_rewards(request):
 # Make sure to update the discount/upgrade/exclusive table
 @api_view(['POST'])
 def create_reward(request, type):
-    # Create reward entry
-
-    print(request.data['points'])
-
-
-
-
-    # reward = Rewards.objects.create(
-    #     points = request.data['points'],
-    #     end = request.data['end'],
-    #     title = request.data['rewardname'],
-    #     image = request.data['rewardimage'],
-    #     description = request.data['rewarddescription']
-    # )
-
-    # # Check if reward data is valid
-    # reward_serializer = RewardsSerializer(reward)
-    # if not reward_serializer.is_valid():
-    #     reward.delete()
-    #     return Response(reward_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    # # Create percent discount reward entry
-    # percent = Percentdiscountreward.objects.create(
-    #     reward = reward.id,
-    #     product_id = request.data['product_id'],
-    #     discountpercent = request.data['discountpercent']
-    # )
-
-    # # Check if percent data is valid
-    # percent_serializer = PercentDiscountRewardSerializer(percent)
-    # if not percent_serializer.is_valid():
-    #     percent.delete()
-    #     return Response(percent_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    request_data = request.data
+    reward_serializer = RewardsSerializer(data=request_data)
+    if not reward_serializer.is_valid():
+        return Response(reward_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    r_id = Rewards.objects.latest('reward_id').reward_id
 
+    if(type == 0):
+        
+        # Create percent discount reward entry
+        request_data["reward"] = r_id
+        request_data["product"] = request_data["product_id"]
+        request_data["percent"] = request_data["discountpercent"]
 
+        percent = PercentDiscountRewardSerializer(data=request_data)
+        if not percent.is_valid():
+            return Response(percent.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        return Response(status=status.HTTP_201_CREATED)
 
+    elif(type == 1):
+        
+        # Create price discount reward entry
+        request_data["reward"] = r_id
+        request_data["product"] = request_data["product_id"]
+        request_data["price"] = request_data["discountprice"]
 
-
-    idk = Rewards.objects.create(
-        points = 100,
-        end = None,
-        title = "idk",
-        image = None,
-        description = None
-    )
-    idk_serializer = RewardsSerializer(idk)
-
-    return Response(data=idk_serializer.data, status=status.HTTP_201_CREATED)
-
-
-
-
-
-
-# serializer = ProductsSerializer(data=request.data)
-
-#     if serializer.is_valid():
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-    # if type == 0:
-    #     serializer = PercentDiscountRewardViewSerializer(data=request.data)
-
-    #     if serializer.is_valid():
-
-    #         rewardentry = Rewards(
-    #             points=serializer.validated_data.get('points'),
-    #             end=serializer.validated_data.get('end'),
-    #             title=serializer.validated_data.get('title'),
-    #             image=serializer.validated_data.get('image'),
-    #             description=serializer.validated_data.get('description')
-    #         )
-    #         rewardentry.save()
-
-    #         percententry = Percentdiscountreward(
-    #             pk=Rewards.objects.latest('reward_id').reward_id,
-    #             product_id=Products.objects.get('product_id').product_id,
-    #             percent=serializer.validated_data.get('percent')
-    #         )
-    #         percententry.save()
-
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        price = PriceDiscountRewardSerializer(data=request.data)
+        if not price.is_valid():
+            return Response(price.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_201_CREATED)
     
-    # elif type == 1:
-    #     serializer = PriceDiscountRewardViewSerializer(data=request.data)
+    elif(type == 2):
+        
+        # Create product upgrade reward entry
+        request_data["reward"] = r_id
+        request_data["prevproduct"] = request_data["prev_product_id"]
+        request_data["nextproduct"] = request_data["next_product_id"]
 
-    #     if serializer.is_valid():
-
-    #         rewardentry = Rewards(
-    #             points=serializer.validated_data.get('points'),
-    #             end=serializer.validated_data.get('end'),
-    #             title=serializer.validated_data.get('title'),
-    #             image=serializer.validated_data.get('image'),
-    #             description=serializer.validated_data.get('description')
-    #         )
-    #         rewardentry.save()
-
-    #         priceentry = Pricediscountreward(
-    #             pk=Rewards.objects.latest('reward_id').reward_id,
-    #             product_id=Products.objects.get('product_id').product_id,
-    #             price=serializer.validated_data.get('price')
-    #         )
-    #         priceentry.save()
-
-    #         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        upgrade = ProductUpgradeRewardSerializer(data=request.data)
+        if not upgrade.is_valid():
+            return Response(upgrade.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_201_CREATED)
     
-    # elif type == 2:
-    #     rewardserializer = RewardsSerializer(data=request.data)
-    #     if not rewardserializer.is_valid():
-    #         return Response(rewardserializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    #     reward = Rewards(
-    #         points=rewardserializer.validated_data.get('points'),
-    #         end=rewardserializer.validated_data.get('end'),
-    #         title=rewardserializer.validated_data.get('title'),
-    #         image=rewardserializer.validated_data.get('image'),
-    #         description=rewardserializer.validated_data.get('description')
-    #     )
-    #     reward.save()
+    elif(type == 3):
+        
+        # Create product upgrade reward entry
+        request_data["reward"] = r_id
+        request_data["product"] = request_data["product_id"]
 
-    #     rewardpk=Rewards.objects.latest('reward_id').reward_id
-    #     prevfk=request.data['prevproduct_id']
-    #     nextfk=request.data['nextproduct_id']
-    #     upgrade = Productupgradereward(
-    #         pk=rewardpk,
-    #         prevproduct_id=Products.objects.get(pk=prevfk).product_id,
-    #         nextproduct_id=Products.objects.get(pk=nextfk).product_id
-    #     )
-    #     upgrade.save()
-
-    #     upgradeview = Productupgraderewardview.objects.get(pk=rewardpk)
-    #     serializer = ProductUpgradeRewardViewSerializer(upgradeview)
-
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-    # elif type == 3:
-    #     rewardserializer = RewardsSerializer(data=request.data)
-    #     if not rewardserializer.is_valid():
-    #         return Response(rewardserializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    #     reward = Rewards(
-    #         points=rewardserializer.validated_data.get('points'),
-    #         end=rewardserializer.validated_data.get('end'),
-    #         title=rewardserializer.validated_data.get('title'),
-    #         image=rewardserializer.validated_data.get('image'),
-    #         description=rewardserializer.validated_data.get('description')
-    #     )
-    #     reward.save()
-
-    #     rewardpk=Rewards.objects.latest('reward_id').reward_id
-    #     exclusive = Exclusiveproductreward(
-    #         pk=rewardpk,
-    #         product_id=request.data['product_id']
-    #     )
-    #     exclusive.save()
-
-    #     exclusiveview = Exclusiveproductrewardview.objects.get(pk=rewardpk)
-    #     serializer = ExclusiveProductRewardViewSerializer(exclusiveview)
-
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    # else:
-    #     return Response(status=status.HTTP_400_BAD_REQUEST) 
+        exclusive = ExclusiveProductRewardSerializer(data=request.data)
+        if not exclusive.is_valid():
+            return Response(exclusive.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        return Response(status=status.HTTP_201_CREATED)
 
 # Get / Update a specific reward
 # Make sure to update the discount/upgrade/exclusive table
-@api_view(['GET', 'PUT'])
+@api_view(['GET', 'PUT', 'DELETE'])
 def specific_reward(request, pk):
      # Fetch the data of the reward using the primary key
     try:
@@ -426,32 +311,24 @@ def specific_reward(request, pk):
             serializer = PriceDiscountRewardSerializer(price_discount, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-            price_discount = Pricediscountrewardview.objects.get(pk=pk)
-            serializer = PriceDiscountRewardViewSerializer(price_discount)
             return Response(serializer.data)
         elif(Percentdiscountreward.objects.filter(pk=pk).exists()):
             percent_discount = Percentdiscountreward.objects.get(pk=pk)
             serializer = PercentDiscountRewardSerializer(percent_discount, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-            percent_discount = Percentdiscountrewardview.objects.get(pk=pk)
-            serializer = PercentDiscountRewardViewSerializer(percent_discount)
             return Response(serializer.data)
         elif(Productupgradereward.objects.filter(pk=pk).exists()):
             product_upgrade = Productupgradereward.objects.get(pk=pk)
             serializer = ProductUpgradeRewardSerializer(product_upgrade, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-            product_upgrade = Productupgraderewardview.objects.get(pk=pk)
-            serializer = ProductUpgradeRewardViewSerializer(product_upgrade)
             return Response(serializer.data)
         elif(Exclusiveproductreward.objects.filter(pk=pk).exists()):
             exclusive = Exclusiveproductreward.objects.get(pk=pk)
             serializer = ExclusiveProductRewardSerializer(exclusive, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-            exclusive = Exclusiveproductrewardview.objects.get(pk=pk)
-            serializer = ExclusiveProductRewardViewSerializer(exclusive)
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     

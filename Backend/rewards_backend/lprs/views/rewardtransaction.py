@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from ..models import *
 from ..serializers import *
+import json
 
 # Note: Update lprs/serializers.py and lprs/urls.py
 
@@ -39,13 +40,20 @@ def specific_rewardtransaction(request, pk):
      # Fetch the data of the reward using the primary key
     try:
         rewardtransaction = Rewardtransaction.objects.get(pk=pk)
+        reward = rewardtransaction.reward
     except Rewardtransaction.DoesNotExist:
         return Response(status=status.HTTP_404_BAD_REQUEST)
     
     # Get the specified user
     if request.method == 'GET':
-        serializer = RewardTransactionViewSerializer(rewardtransaction)
-        return Response(serializer.data)
+        rt_serializer = RewardTransactionSerializer(rewardtransaction)
+
+        reward = rt_serializer.validated_data.get('Rewards')
+        r_serializer = RewardsSerializer(reward)
+
+        viewdata = rt_serializer.data
+        viewdata.update(r_serializer.data)
+        return Response(viewdata)
     
     #Update details of the specified reward transaction
     elif request.method == 'PUT':
