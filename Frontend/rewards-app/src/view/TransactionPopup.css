@@ -43,7 +43,7 @@
     padding-bottom: 10px;
 }
 
-.reward-exp-date {
+.transaction-date {
     font-size: 16px;
     color: #555;
     margin-bottom: 20px;
@@ -82,9 +82,14 @@
     color: #888;
 }
 
+.qr-code-box :hover{
+    background-color: #acacac;
+    cursor: pointer;
+}
+
 .qr-code-placeholder {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     background-color: #ccc;
     border-radius: 8px;
     display: flex;
@@ -104,6 +109,7 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    z-index: 100;
 }
 
 .buttons-container {
