@@ -13,7 +13,6 @@ function Transactions({user}) {
     const [inactiveTransactions, setInactiveTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [showTransactionPopup, setShowTransactionPopup] = useState(false);
 
     useEffect(() => {
         fetch('http://localhost:8000/lprs/rewardbyuser/1/' + user.user_id)
@@ -34,9 +33,7 @@ function Transactions({user}) {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [activetransaction_id]);
 
-    useEffect(() => {
         fetch('http://localhost:8000/lprs/rewardbyuser/0/' + user.user_id)
             .then(response => {
                 if (!response.ok) {
@@ -55,7 +52,7 @@ function Transactions({user}) {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [user, inactivetransaction_id]);
+    }, [user, activetransaction_id, inactivetransaction_id]);
 
     if (loading) {
         console.log('loading');
