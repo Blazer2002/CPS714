@@ -4,16 +4,13 @@ export const createTransaction = async (user_id, reward_id) => {
         reward_id: reward_id
     };
 
-    const formatData = JSON.stringify(transactionData);
-
     try {
-        console.log(formatData);
         const response = await fetch('http://localhost:8000/lprs/rewardtransactions/post/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: formatData,
+            body: JSON.stringify(transactionData),
         });
 
         if (!response.ok) {
