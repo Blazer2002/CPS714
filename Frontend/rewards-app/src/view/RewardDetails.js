@@ -147,6 +147,7 @@ function RewardDetails({ user }) {
             {showTransactionPopup && newTransaction && (
                 <TransactionPopup
                     transaction={newTransaction}
+                    reward={reward}
                     isOpen={showTransactionPopup}
                     onClose={closeTransactionPopup}/>
             )}
