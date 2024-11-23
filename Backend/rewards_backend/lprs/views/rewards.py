@@ -259,23 +259,22 @@ def specific_reward(request, pk):
     except Rewards.DoesNotExist:
         return Response(status=status.HTTP_404_BAD_REQUEST)
     
-    # Fetch reward serializer data
-    reward_serializer = RewardsSerializer(reward)
-    
-    # Edit Reward Keys - Avoid Duplications in Join Operator
-    reward_json = reward_serializer.data
-
-    if(reward_json.get("reward")):
-        reward_json["reward_id"] = reward_json.pop("reward")
-    if(reward_json.get("title")):
-        reward_json["rewardname"] = reward_json.pop("title")
-    if(reward_json.get("image")):
-        reward_json["rewardimage"] = reward_json.pop("image")
-    if(reward_json.get("description")):
-        reward_json["rewarddescription"] = reward_json.pop("description")
-    
     # Get the specified user
     if request.method == 'GET':
+    
+        # Fetch reward serializer data
+        reward_serializer = RewardsSerializer(reward)
+        
+        # Edit Reward Keys - Avoid Duplications in Join Operator
+        reward_json = reward_serializer.data
+
+        if(reward_json.get("reward")):
+            reward_json["reward_id"] = reward_json.pop("reward")
+        if(reward_json.get("title")):
+            reward_json["rewardname"] = reward_json.pop("title")
+        reward_json["rewardimage"] = reward_json.pop("image")
+        reward_json["rewarddescription"] = reward_json.pop("description")
+
         if(Percentdiscountreward.objects.filter(pk=pk).exists()):
             # Fetch price reward serializer data
             percent_discount = Percentdiscountreward.objects.get(pk=pk)
@@ -389,47 +388,77 @@ def specific_reward(request, pk):
         return Response(reward_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-
-            
-
-
-
-
-
-    
     #Update details of the specified reward
     elif request.method == 'PUT':
-        serializer = RewardsSerializer(reward, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        request_data = request.data
+
+        getRewards_serializer = RewardsSerializer(reward)
+        reward_json = getRewards_serializer.data
+
+        reward_json['reward'] = request_data['reward_id']
+        reward_json['title'] = request_data.pop('rewardname')
+        reward_json['image'] = request_data.pop('rewardimage')
+        reward_json['description'] = request_data.pop('rewarddescription')
+
+        rewards_serializer = RewardsSerializer(reward, data=reward_json)
+        if rewards_serializer.is_valid():
+            rewards_serializer.save()
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response(rewards_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
         if(Pricediscountreward.objects.filter(pk=pk).exists()):
             price_discount = Pricediscountreward.objects.get(pk=pk)
-            serializer = PriceDiscountRewardSerializer(price_discount, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-            return Response(serializer.data)
+            getPrice_serializer = PriceDiscountRewardSerializer(price_discount)
+            price_json = getPrice_serializer.data
+            
+            price_json['reward'] = request_data.pop('reward_id')
+            price_json["product"] = request_data.pop("product_id")
+            price_json["price"] = request_data.pop("discountprice")
+
+            price_serializer = PriceDiscountRewardSerializer(price_discount, data=price_json)
+            if price_serializer.is_valid():
+                price_serializer.save()
+                return Response(price_serializer.data)
         elif(Percentdiscountreward.objects.filter(pk=pk).exists()):
             percent_discount = Percentdiscountreward.objects.get(pk=pk)
-            serializer = PercentDiscountRewardSerializer(percent_discount, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-            return Response(serializer.data)
+            getPercent_serializer = PercentDiscountRewardSerializer(percent_discount)
+            percent_json = getPercent_serializer.data
+
+            percent_json['reward'] = request_data.pop('reward_id')
+            percent_json["product"] = request_data.pop("product_id")
+            percent_json['percent'] = request_data.pop("discountpercent")
+
+            percent_serializer = PercentDiscountRewardSerializer(percent_discount, data=percent_json)
+            if percent_serializer.is_valid():
+                percent_serializer.save()
+                return Response(percent_serializer.data)
         elif(Productupgradereward.objects.filter(pk=pk).exists()):
             product_upgrade = Productupgradereward.objects.get(pk=pk)
-            serializer = ProductUpgradeRewardSerializer(product_upgrade, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-            return Response(serializer.data)
+            getUpgrade_serializer = ProductUpgradeRewardSerializer(product_upgrade)
+            upgrade_json = getUpgrade_serializer.data
+
+            upgrade_json['reward'] = request_data.pop('reward_id')
+            upgrade_json["prevproduct"] = request_data["prev_product_id"]
+            upgrade_json["nextproduct"] = request_data["next_product_id"]
+
+            upgrade_serializer = ProductUpgradeRewardSerializer(product_upgrade, data=upgrade_json)
+            if upgrade_serializer.is_valid():
+                upgrade_serializer.save()
+                return Response(upgrade_serializer.data)
         elif(Exclusiveproductreward.objects.filter(pk=pk).exists()):
             exclusive = Exclusiveproductreward.objects.get(pk=pk)
-            serializer = ExclusiveProductRewardSerializer(exclusive, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            getExclusive_serializer = ExclusiveProductRewardSerializer(exclusive)
+            exclusive_json = getExclusive_serializer.data
+
+            exclusive_json['reward'] = request_data.pop('reward_id')
+            exclusive_json["product"] = request_data.pop("product_id")
+
+            exclusive_serializer = ExclusiveProductRewardSerializer(exclusive, data=exclusive_json)
+            if exclusive_serializer.is_valid():
+                exclusive_serializer.save()
+                return Response(exclusive_serializer.data)
+        return Response(rewards_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     # Delete the user
     elif request.method == 'DELETE':
