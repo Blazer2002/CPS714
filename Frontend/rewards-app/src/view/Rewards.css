@@ -22,7 +22,7 @@
     font-size: 40px;
 }
 
-.search-filter {
+.reward-types{
     display: flex;
     width: 90%;
     flex-wrap: wrap;
@@ -32,11 +32,6 @@
     padding: 25px;
     padding-bottom: 0px;
     margin: 0 auto;
-    /* border: 1px solid black; */
-}
-
-.search-filter button {
-    padding: 5px;
 }
 
 .card-container {
@@ -48,7 +43,7 @@
     padding: 20px;
     padding-top: 0px;
     margin: 0 auto;
-    /* border: 1px solid black; */
+    border: 1px solid #55555555;
 }
 
 .transaction-history {
