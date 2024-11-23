@@ -47,11 +47,12 @@ function TransactionCard( { transaction, active } ) {
             </div>
             <div className='transaction-info'>
                 <h3>#{transaction.transaction_id}: {transaction.title}</h3>
+                <p>Transaction Date: {formatDate(transaction.date)}</p>
                 {reward ? (
                     active ? (
                         <p>End date: {reward.end ? formatDate(transaction.date) : 'Ongoing'}</p>
-                    ) : (
-                        <p>Transaction Date: {formatDate(transaction.date)}</p>
+                    ) : ( 
+                        console.log('Inactive Transaction')
                     )
                 ) : (
                     console.log('Loading rewards data')
