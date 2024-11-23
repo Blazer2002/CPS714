@@ -7,7 +7,7 @@ function TransactionPopup({ transaction, reward, isOpen, onClose}) {
     const [error, setError] = useState(null);
 
     const deactivateTransaction = () => {
-        const reward_id = (transaction.reward_id == null) ? transaction.reward : transaction.reward_id;
+        const reward_id = (transaction.reward_id == null) ? transaction.reward : (transaction.reward == null ? transaction.reward_id : transaction.reward);
         const newData = {
             transaction_id: transaction.transaction_id,
             date: transaction.date,
