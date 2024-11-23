@@ -1,10 +1,41 @@
 import React from 'react';
 import './TransactionCard.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TransactionPopup from '../view/TransactionPopup';
+import formatDate from '../utility';
 
 function TransactionCard( { transaction, active } ) {
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [reward, setFetchReward] = useState(null);
     const [showTransactionPopup, setShowTransactionPopup] = useState(false);
+
+    useEffect(() => {
+        fetch(`http://localhost:8000/lprs/rewards/${transaction.reward_id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(rewardData => {
+                setFetchReward(rewardData);
+                setLoading(false);
+            })
+            .catch(error => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, [transaction]);
+
+    if (loading) {
+        console.log('Loading reward details');
+    }
+
+    if (error) {
+        console.log('Error loading reward details');
+    }
+
     return (
         <div className="transaction-card" >
             <div className="transaction-image">
@@ -16,19 +47,23 @@ function TransactionCard( { transaction, active } ) {
             </div>
             <div className='transaction-info'>
                 <h3>{transaction.title}</h3>
-                {active && (
-                    <p>End date:Ongoing</p>
-                )}
-                {!active && (
-                    <p>Expired/Redeemed</p>
+                {reward ? (
+                    active ? (
+                        <p>End date: {reward.end ? formatDate(transaction.date) : 'Ongoing'}</p>
+                    ) : (
+                        <p>Transaction Date: {formatDate(transaction.date)}</p>
+                    )
+                ) : (
+                    console.log('Loading rewards data')
                 )}
             </div>
             {active && (
                 <button className="redemption-button" onClick={() => setShowTransactionPopup(true)}>Redeem</button>
             )}
-            {showTransactionPopup && (
+            {showTransactionPopup && reward && (
                 <TransactionPopup
                     transaction={transaction}
+                    reward={reward}
                     isOpen={showTransactionPopup}
                     onClose={() => setShowTransactionPopup(false)}
                 />
