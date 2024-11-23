@@ -48,6 +48,12 @@ function Rewards() {
                 <h1>Rewards</h1>
                 <button className="transaction-history" onClick={rewardsTransactions}>Reward Transactions</button>
             </div>
+            <div className='search-filter'>
+                <button className="percent-discount-button">Percent Discount</button>
+                <button className="priced-discount-button">Priced Discount</button>
+                <button className="exclusive-upgrade-button">Exclusive Upgrade</button>
+                <button className="product-upgrade-button">Product Upgrade</button>
+            </div>
             <div className='card-container'>
                 {rewards.length > 0 ? (
                     rewards.map(reward => (
