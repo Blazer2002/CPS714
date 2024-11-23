@@ -46,7 +46,7 @@ function TransactionCard( { transaction, active } ) {
                 )}
             </div>
             <div className='transaction-info'>
-                <h3>{transaction.title}</h3>
+                <h3>#{transaction.transaction_id}: {transaction.title}</h3>
                 {reward ? (
                     active ? (
                         <p>End date: {reward.end ? formatDate(transaction.date) : 'Ongoing'}</p>
